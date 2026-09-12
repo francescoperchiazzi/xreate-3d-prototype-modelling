@@ -298,6 +298,46 @@ material uses one USD Preview Surface, the portable PBR graph expected by
 RealityKit importers. Apple beta releases can still vary, so re-import a freshly
 exported file when testing a new Reality Composer Pro build.
 
+## Interoperability — modern SDKs, Apple Keynote, and Microsoft PowerPoint
+
+An XReate export is never a dead-end artefact: the same GLB and USDZ files move
+directly into production tools without a re-topology or re-mapping step. The
+reference scenes below (basketball, sun-glasses, fizzy-drink can, and the
+pencil-and-paper T-Rex billboard) are imported verbatim into each third-party
+tool to prove round-trip fidelity. Beyond the native 3D SDKs, the same USDZ and
+GLB assets drop straight into slideware, so a single XReate composition can
+serve as a classroom hand-in, a research poster prop, and a live AR demo —
+without any intermediate conversion software.
+
+### 19 — USDZ in Apple Reality Composer Pro
+
+![XReate reference composition opened in Apple Reality Composer Pro from the USDZ export, alongside its editable XReate project sources listed under Project → scenes](docs/screenshots/19-interoperability-reality-composer-pro-usdz.png)
+
+*The full multi-part exercise opens inside Apple Reality Composer Pro straight
+from the USDZ export: each volume keeps its individual PBR material, texture
+atlas, object hierarchy, and real-world metre scale so it is ready for
+RealityKit animation, spatial anchors, and visionOS simulation. Use the same
+USDZ file in **Apple Keynote** via **Insert → Choose** or drag-and-drop into a
+slide, or drop it directly on a PowerPoint slide in **Microsoft PowerPoint**
+(Insert → Pictures → This Device); both Keynote and PowerPoint render the USDZ
+as a rotatable 3D object that students can inspect during a lecture.*
+
+### 20 — GLB in Godot
+
+![XReate reference composition imported into Godot 4 via the GLB export, with each volume exposed as an editable Node3D in the scene tree](docs/screenshots/20-interoperability-godot-glb-import.png)
+
+*Godot 4 imports the XReate GLB as a one-click scene: every original part
+survives as a named Node3D with its own mesh, material, and UV assignment,
+ready for gameplay scripting, physics, and shader overrides. The same GLB is
+also compatible with the modern 3D pipelines of Unity, Unreal Engine, Blender,
+and Web frameworks such as Three.js, React Three Fiber, and PlayCanvas. In
+**Microsoft PowerPoint** use **Insert → 3D Models → From a File** and pick the
+GLB; PowerPoint preserves the materials and lets you rotate, pan, and animate
+the model on any slide. Apple Keynote currently favours USDZ for 3D slide
+insertion, while PowerPoint accepts both USDZ and GLB natively, so the pair of
+exports covers all classroom and academic presentation targets from a single
+XReate project.*
+
 ## Verification
 
 ```sh
