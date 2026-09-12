@@ -1,0 +1,386 @@
+<div class="xr-modal-overlay" id="exportModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalMsg" data-ui-mode="global">
+   <div class="xr-modal" role="document">
+      <h2 id="modalTitle" data-i18n="modal_export_title">Export</h2>
+      <p id="modalMsg" data-i18n="modal_export_working" aria-live="polite">Generating file…</p>
+      <button class="xr-modal__btn" id="exportModalClose" type="button" data-i18n="modal_close">Close</button>
+   </div>
+</div>
+<div class="xr-modal-overlay" id="renameLayerModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-rename-layer-modal" role="dialog" aria-modal="true" aria-labelledby="renameLayerTitle">
+      <h2 id="renameLayerTitle" data-i18n="layer_rename">Rename layer</h2>
+      <div class="xr-field-row">
+         <span class="xr-field-label" data-i18n="prompt_layer_name">Layer name</span>
+      </div>
+      <label class="xr-visually-hidden" for="renameLayerInput">Layer name</label>
+      <input class="xr-field-text" id="renameLayerInput" type="text" autocomplete="off" aria-describedby="renameLayerError" />
+      <div class="xr-help-text xr-rename-layer-error" id="renameLayerError" role="status" aria-live="polite" hidden></div>
+      <div class="xr-ctl-row">
+         <button class="xr-modal__btn" id="renameLayerCancel" type="button" data-i18n="modal_mask_cancel">Cancel</button>
+         <button class="xr-modal__btn" id="renameLayerOk" type="button" data-i18n="modal_mask_apply">Apply</button>
+      </div>
+   </div>
+</div>
+<div class="xr-modal-overlay" id="shortcutsModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+      <h2 id="shortcutsTitle" data-i18n="shortcuts_title">Keyboard shortcuts</h2>
+      <div class="xr-shortcuts">
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">H</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_open">Open keyboard shortcuts</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">G</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_tool_move">Move tool</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">R</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_tool_rotate">Rotate tool</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">S</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_tool_scale">Scale tool</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">W</span> <span class="xr-kbd">A</span> <span class="xr-kbd">S</span> <span class="xr-kbd">D</span></div><div class="xr-shortcuts__desc">Pan camera (Free view) · Space = move up</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Q</span> <span class="xr-kbd">E</span></div><div class="xr-shortcuts__desc">Move camera down / up along vertical axis</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Numpad 1</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_view_front">Front view</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Numpad 7</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_view_top">Top view</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Numpad 5</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_view_toggle_projection">Toggle ortho/perspective</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">F</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_fit_view">Fit view</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Mouse</span> <span class="xr-kbd">Middle</span> + <span class="xr-kbd">Drag</span></div><div class="xr-shortcuts__desc">Pan 3D viewport (any view)</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Trackpad</span> <span class="xr-kbd">2-finger</span> <span class="xr-kbd">Drag</span></div><div class="xr-shortcuts__desc">Pan the 3D canvas (touch / trackpad)</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Mouse</span> <span class="xr-kbd">Wheel</span></div><div class="xr-shortcuts__desc">Zoom viewport in / out (dolly)</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Shift</span> + <span class="xr-kbd">Click</span></div><div class="xr-shortcuts__desc">Add volume to multi-selection</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">A</span></div><div class="xr-shortcuts__desc">Select all volumes in the scene</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Delete</span> / <span class="xr-kbd">Backspace</span></div><div class="xr-shortcuts__desc">Delete selected volumes</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">D</span></div><div class="xr-shortcuts__desc">Duplicate selected volumes</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Tab</span></div><div class="xr-shortcuts__desc">Cycle transform tool (Move → Rotate → Scale)</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">S</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_save">Save project (.xreate.json)</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">Z</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_undo">Undo</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">Shift</span> + <span class="xr-kbd">Z</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_redo">Redo</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">Y</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_redo">Redo</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Cmd/Ctrl</span> + <span class="xr-kbd">Shift</span> + <span class="xr-kbd">A</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_autosave">Open autosave history</div></div>
+         <div class="xr-shortcuts__row"><div class="xr-shortcuts__key"><span class="xr-kbd">Esc</span></div><div class="xr-shortcuts__desc" data-i18n="shortcuts_close">Close open menus and dialogs</div></div>
+      </div>
+      <button class="xr-modal__btn" id="shortcutsClose" type="button" data-i18n="modal_close">Close</button>
+   </div>
+</div>
+<div class="xr-modal-overlay" id="uvCompareModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-uv-compare-modal" role="dialog" aria-modal="true" aria-labelledby="uvCompareTitle">
+      <h2 id="uvCompareTitle" data-i18n="uv_compare_title">Compare UV modes</h2>
+      <div class="xr-uv-compare-grid" role="list">
+         <div class="xr-uv-compare-tile" role="listitem">
+            <div class="xr-uv-compare-tile__label" aria-hidden="true" data-i18n="uv_mode_spherical">Spherical</div>
+            <svg class="xr-uv-compare-svg" viewBox="0 0 100 100" role="img" aria-label="Spherical UV mode — seam wraps around the poles">
+               <rect x="6" y="6" width="88" height="88" fill="none" stroke="rgba(40,35,28,0.55)" stroke-width="1.5"/>
+               <line x1="6" y1="50" x2="94" y2="50" stroke="rgba(40,35,28,0.8)" stroke-width="1.5"/>
+               <line x1="6" y1="6" x2="6" y2="94" stroke="rgba(40,35,28,0.8)" stroke-width="1.5"/>
+               <g stroke="rgba(40,35,28,0.22)" stroke-width="1" stroke-dasharray="3 4">
+                  <line x1="28" y1="6" x2="28" y2="94"/><line x1="50" y1="6" x2="50" y2="94"/><line x1="72" y1="6" x2="72" y2="94"/>
+                  <line x1="6" y1="28" x2="94" y2="28"/><line x1="6" y1="72" x2="94" y2="72"/>
+               </g>
+               <g stroke="rgba(40,35,28,0.8)" stroke-width="2">
+                  <line x1="16" y1="16" x2="32" y2="16"/><line x1="16" y1="16" x2="16" y2="32"/>
+               </g>
+               <text x="18" y="12" font-size="7" fill="rgba(40,35,28,0.85)" font-family="IBM Plex Sans, system-ui, sans-serif">(0,0)</text>
+            </svg>
+         </div>
+         <div class="xr-uv-compare-tile" role="listitem">
+            <div class="xr-uv-compare-tile__label" aria-hidden="true" data-i18n="uv_mode_box">Box</div>
+            <svg class="xr-uv-compare-svg" viewBox="0 0 100 100" role="img" aria-label="Box UV mode — unwraps into six faces">
+               <g fill="rgba(40,35,28,0.06)" stroke="rgba(40,35,28,0.65)" stroke-width="1.5">
+                  <rect x="40" y="14" width="18" height="18"/>
+                  <rect x="22" y="32" width="18" height="18"/>
+                  <rect x="40" y="32" width="18" height="18"/>
+                  <rect x="58" y="32" width="18" height="18"/>
+                  <rect x="76" y="32" width="18" height="18"/>
+                  <rect x="40" y="50" width="18" height="18"/>
+               </g>
+               <g stroke="rgba(40,35,28,0.8)" stroke-width="2">
+                  <line x1="40" y1="32" x2="54" y2="32"/><line x1="40" y1="32" x2="40" y2="46"/>
+               </g>
+               <text x="42" y="28" font-size="7" fill="rgba(40,35,28,0.85)" font-family="IBM Plex Sans, system-ui, sans-serif">(0,0)</text>
+            </svg>
+         </div>
+         <div class="xr-uv-compare-tile" role="listitem">
+            <div class="xr-uv-compare-tile__label" aria-hidden="true" data-i18n="uv_mode_planar">Planar</div>
+            <svg class="xr-uv-compare-svg" viewBox="0 0 100 100" role="img" aria-label="Planar UV mode — flat projection, stretching toward edges">
+               <rect x="10" y="10" width="80" height="80" fill="none" stroke="rgba(40,35,28,0.65)" stroke-width="1.5"/>
+               <g stroke="rgba(40,35,28,0.22)" stroke-width="1" stroke-dasharray="3 4">
+                  <line x1="30" y1="10" x2="30" y2="90"/><line x1="50" y1="10" x2="50" y2="90"/><line x1="70" y1="10" x2="70" y2="90"/>
+                  <line x1="10" y1="30" x2="90" y2="30"/><line x1="10" y1="50" x2="90" y2="50"/><line x1="10" y1="70" x2="90" y2="70"/>
+               </g>
+               <g stroke="rgba(40,35,28,0.8)" stroke-width="2">
+                  <line x1="10" y1="10" x2="26" y2="10"/><line x1="10" y1="10" x2="10" y2="26"/>
+               </g>
+               <text x="12" y="8" font-size="7" fill="rgba(40,35,28,0.85)" font-family="IBM Plex Sans, system-ui, sans-serif">(0,0)</text>
+            </svg>
+         </div>
+         <div class="xr-uv-compare-tile" role="listitem">
+            <div class="xr-uv-compare-tile__label" aria-hidden="true" data-i18n="uv_mode_cylindrical">Cylindrical</div>
+            <svg class="xr-uv-compare-svg" viewBox="0 0 100 100" role="img" aria-label="Cylindrical UV mode — wraps the sides, caps are separate islands">
+               <rect x="12" y="36" width="76" height="28" fill="rgba(40,35,28,0.06)" stroke="rgba(40,35,28,0.65)" stroke-width="1.5"/>
+               <g stroke="rgba(40,35,28,0.22)" stroke-width="1" stroke-dasharray="3 4">
+                  <line x1="24.7" y1="36" x2="24.7" y2="64"/><line x1="37.4" y1="36" x2="37.4" y2="64"/><line x1="50.1" y1="36" x2="50.1" y2="64"/><line x1="62.8" y1="36" x2="62.8" y2="64"/><line x1="75.5" y1="36" x2="75.5" y2="64"/>
+               </g>
+               <circle cx="50" cy="26" r="8.5" fill="rgba(40,35,28,0.06)" stroke="rgba(40,35,28,0.65)" stroke-width="1.5"/>
+               <circle cx="50" cy="74" r="8.5" fill="rgba(40,35,28,0.06)" stroke="rgba(40,35,28,0.65)" stroke-width="1.5"/>
+               <g stroke="rgba(40,35,28,0.8)" stroke-width="2">
+                  <line x1="12" y1="36" x2="28" y2="36"/><line x1="12" y1="36" x2="12" y2="52"/>
+               </g>
+               <text x="14" y="32" font-size="7" fill="rgba(40,35,28,0.85)" font-family="IBM Plex Sans, system-ui, sans-serif">(0,0)</text>
+            </svg>
+         </div>
+      </div>
+      <button class="xr-modal__btn" id="uvCompareClose" type="button" data-i18n="modal_close">Close</button>
+</div>
+</div>
+<div class="xr-modal-overlay" id="uvWorkspaceModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-uv-workspace-modal" role="dialog" aria-modal="true" aria-labelledby="uvWorkspaceTitle" aria-describedby="uvWorkspaceHint">
+      <div class="xr-uv-workspace__head">
+         <div>
+            <h2 id="uvWorkspaceTitle" data-i18n="uv_workspace_title">UV workspace</h2>
+            <p id="uvWorkspaceHint" class="xr-help-text" data-i18n="uv_workspace_hint">Arrange the selected texture at a larger scale. The same layer, mask, and transform controls remain live.</p>
+         </div>
+         <button class="xr-modal__btn xr-uv-workspace__close" id="uvWorkspaceClose" type="button" data-i18n="modal_close">Close</button>
+      </div>
+      <div class="xr-uv-workspace__layout">
+         <section class="xr-uv-workspace__canvas-region" aria-label="Large UV editing canvas" data-i18n-aria="aria_uv_workspace_canvas">
+            <div class="xr-uv-workspace__canvas-host" id="uvWorkspaceCanvasHost"></div>
+            <div class="xr-uv-workspace__view-tools" role="group" aria-label="UV workspace canvas view" data-i18n-aria="aria_uv_workspace_view">
+               <span class="xr-uv-workspace__view-label" data-i18n="uv_workspace_view">Canvas view</span>
+               <button class="xr-uv-workspace__view-btn" id="uvWorkspaceZoomOut" type="button" aria-label="Zoom out" data-i18n-aria="aria_zoom_out">−</button>
+               <output class="xr-uv-workspace__zoom-value" id="uvWorkspaceZoomValue" aria-live="polite">100%</output>
+               <button class="xr-uv-workspace__view-btn" id="uvWorkspaceZoomIn" type="button" aria-label="Zoom in" data-i18n-aria="aria_zoom_in">+</button>
+               <button class="xr-uv-workspace__view-btn xr-uv-workspace__view-btn--fit" id="uvWorkspaceViewFit" type="button" data-i18n="uv_workspace_fit">Fit</button>
+               <button class="xr-uv-workspace__view-btn xr-uv-workspace__view-btn--pan" id="uvWorkspacePan" type="button" aria-pressed="false" data-i18n="uv_workspace_pan">Pan</button>
+               <span class="xr-uv-workspace__wheel-label" data-i18n="uv_workspace_wheel">Wheel</span>
+               <div class="xr-uv-workspace__wheel-switch" role="group" aria-label="Mouse wheel controls" data-i18n-aria="aria_uv_workspace_wheel">
+                  <button class="xr-uv-workspace__wheel-btn" id="uvWorkspaceWheelTexture" type="button" aria-pressed="true" data-i18n="uv_workspace_wheel_texture">Texture</button>
+                  <button class="xr-uv-workspace__wheel-btn" id="uvWorkspaceWheelView" type="button" aria-pressed="false" data-i18n="uv_workspace_wheel_view">View</button>
+               </div>
+            </div>
+         </section>
+         <aside class="xr-uv-workspace__controls" aria-label="Texture transform controls" data-i18n-aria="aria_uv_workspace_transform">
+            <h3 data-i18n="uv_workspace_transform">Image transform</h3>
+            <div id="uvWorkspaceTransformHost"></div>
+         </aside>
+         <aside class="xr-uv-workspace__layers" aria-label="Texture layer controls" data-i18n-aria="aria_uv_workspace_layers">
+            <h3 data-i18n="uv_workspace_layers">Image layers</h3>
+            <div id="uvWorkspaceLayersHost"></div>
+         </aside>
+      </div>
+   </div>
+</div>
+<div class="xr-modal-overlay" id="maskModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-mask-modal" role="dialog" aria-modal="true" aria-labelledby="maskTitle">
+      <h2 id="maskTitle" data-i18n="modal_mask_title">Mask</h2>
+      <div class="xr-mask-toolbar">
+         <div class="xr-mask-select-tool" role="group" aria-labelledby="maskSelectToolLabel">
+            <span class="xr-mask-tool-label" id="maskSelectToolLabel">Mask tool</span>
+            <div class="xr-mask-toggle" role="group" aria-label="Mask tool mode">
+               <button class="xr-modal__btn" id="maskModeSelect" type="button" aria-pressed="false" aria-controls="maskSelectActions">Select</button>
+               <button class="xr-modal__btn is-active" id="maskModeEdit" type="button" aria-pressed="true">Edit</button>
+            </div>
+            <div class="xr-mask-select-tool__controls" id="maskSelectActions" role="group" aria-label="Select tool scale controls" data-mode="edit">
+               <span class="xr-mask-scale__label">Select controls · Scale</span>
+               <button class="xr-modal__btn" id="maskScaleDown" type="button" aria-label="Scale selected mask down">−</button>
+               <button class="xr-modal__btn" id="maskScaleUp" type="button" aria-label="Scale selected mask up">+</button>
+               <span class="xr-mask-scale__val" id="maskScaleVal">100%</span>
+               <button class="xr-modal__btn" id="maskScaleReset" type="button" aria-label="Reset mask scale">Reset</button>
+            </div>
+         </div>
+         <div class="xr-mask-view-tool" role="group" aria-labelledby="maskViewToolLabel">
+            <span class="xr-mask-tool-label" id="maskViewToolLabel">Canvas view</span>
+            <div class="xr-mask-view-tool__controls" role="group" aria-label="Canvas zoom controls">
+               <span class="xr-mask-scale__label">Zoom</span>
+               <button class="xr-modal__btn" id="maskViewZoomOut" type="button" aria-label="Zoom out of the image">−</button>
+               <button class="xr-modal__btn" id="maskViewZoomIn" type="button" aria-label="Zoom in on the image">+</button>
+               <span class="xr-mask-scale__val" id="maskViewZoomVal">100%</span>
+               <button class="xr-modal__btn" id="maskViewFit" type="button">Fit image</button>
+            </div>
+            <span class="xr-mask-view-tool__hint">View controls only change the preview. Shift+drag or middle-click drag pans it.</span>
+         </div>
+         <div class="xr-mask-presets" role="group" aria-labelledby="maskPresetLabel">
+            <span class="xr-mask-tool-label" id="maskPresetLabel">Quick presets</span>
+            <span class="xr-mask-presets__hint">Create a starting mask, then refine it in Select.</span>
+            <div class="xr-mask-presets__buttons">
+               <button class="xr-modal__btn" id="maskPresetSquare" type="button" data-i18n="modal_mask_square" title="Create a square mask preset">Square</button>
+               <button class="xr-modal__btn" id="maskPresetCircle" type="button" data-i18n="modal_mask_circle" title="Create a circular mask preset">Circle</button>
+            </div>
+         </div>
+      </div>
+      <p id="maskHelp" data-i18n="modal_mask_help">Click to add points. Drag to pan. Wheel to zoom.</p>
+      <div class="xr-mask-canvas-wrap">
+         <canvas id="maskCanvas" width="720" height="520" tabindex="0" aria-label="Polygon mask editor"></canvas>
+      </div>
+      <div class="xr-mask-actions">
+         <div class="xr-mask-actions__left">
+            <button class="xr-modal__btn" id="maskUndo" type="button" data-i18n="modal_mask_undo">Undo</button>
+            <button class="xr-modal__btn" id="maskClear" type="button" data-i18n="modal_mask_clear">Clear</button>
+         </div>
+         <div class="xr-mask-actions__right">
+            <button class="xr-modal__btn" id="maskCancel" type="button" data-i18n="modal_mask_cancel">Cancel</button>
+            <button class="xr-modal__btn" id="maskApply" type="button" data-i18n="modal_mask_apply">Apply</button>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="xr-modal-overlay" id="doodleModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-doodle-modal" role="dialog" aria-modal="true" aria-labelledby="doodleTitle">
+      <div class="xr-doodle-modal__head">
+         <h2 id="doodleTitle" data-i18n="doodle_title">Doodle</h2>
+         <button class="xr-modal__btn" id="doodleClose" type="button" aria-label="Close Doodle" data-i18n-aria="doodle_close">✕</button>
+      </div>
+      <div class="xr-doodle-steps" aria-label="Steps" role="list">
+         <div class="xr-doodle-step is-active" id="doodleStep1Ind" role="listitem" aria-current="step">
+            <span class="xr-doodle-step__num">1</span>
+            <svg class="xr-doodle-step__check" viewBox="0 0 16 16" aria-hidden="true" width="14" height="14"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M3 8.5 L6.5 12 L13 4.5"/></svg>
+            <span class="xr-doodle-step__label" data-i18n="doodle_step1_label">Source</span>
+         </div>
+         <div class="xr-doodle-step" id="doodleStep2Ind" role="listitem">
+            <span class="xr-doodle-step__num">2</span>
+            <svg class="xr-doodle-step__check" viewBox="0 0 16 16" aria-hidden="true" width="14" height="14"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M3 8.5 L6.5 12 L13 4.5"/></svg>
+            <span class="xr-doodle-step__label" data-i18n="doodle_step2_label">Trace</span>
+         </div>
+      </div>
+      <div id="doodleStep1" class="xr-doodle-panel">
+         <div class="xr-doodle-source-card">
+            <svg class="xr-doodle-source-card__icon" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+               <rect x="7" y="16" width="50" height="38" rx="2"></rect><path d="M20 16l4-7h16l4 7"></path><circle cx="32" cy="35" r="10"></circle><path d="M47 23h.01"></path>
+            </svg>
+            <p class="xr-doodle-source-card__eyebrow" data-i18n="doodle_source_eyebrow">START WITH A REFERENCE</p>
+            <p class="xr-doodle-help" data-i18n="doodle_step1_help">Load a reference image to trace over, or skip to draw on a blank canvas.</p>
+            <div class="xr-doodle-load-row">
+               <button class="xr-modal__btn is-primary" id="doodlePickFile" type="button" data-i18n="doodle_load_file">Load image</button>
+               <button class="xr-modal__btn" id="doodlePickCamera" type="button" data-i18n="doodle_load_camera">Use camera</button>
+               <button class="xr-modal__btn" id="doodleSkipImage" type="button" data-i18n="doodle_skip_image">Skip (blank)</button>
+            </div>
+         </div>
+         <input id="doodleFileInput" type="file" accept="image/*" hidden=""/>
+         <input id="doodleCameraInput" type="file" accept="image/*" capture="environment" hidden=""/>
+      </div>
+      <div id="doodleStep2" class="xr-doodle-panel" hidden>
+         <div class="xr-doodle-mode-group" role="region" aria-labelledby="doodleModeGroupLabel">
+            <div class="xr-doodle-toolbar-group__head">
+               <span class="xr-doodle-toolbar-group__label" id="doodleModeGroupLabel" data-i18n="doodle_group_mode">Trace Mode</span>
+               <p class="xr-doodle-mode-caption" id="doodleModeCaption" data-i18n="doodle_mode_caption_polygon">Draw a closed shape — it will be extruded into a 3D solid.</p>
+            </div>
+            <div class="xr-mask-toggle xr-doodle-mode-toggle" role="tablist" aria-label="Doodle mode">
+               <button class="xr-modal__btn is-active" id="doodleModePolygon" type="button" role="tab" aria-selected="true" data-i18n="doodle_mode_polygon">Polygon</button>
+               <button class="xr-modal__btn" id="doodleModeMirror" type="button" role="tab" aria-selected="false" data-i18n="doodle_mode_mirror">Mirror</button>
+               <button class="xr-modal__btn" id="doodleModeRevolve" type="button" role="tab" aria-selected="false" data-i18n="doodle_mode_revolve">Revolve</button>
+            </div>
+         </div>
+         <div class="xr-doodle-error" id="doodleError" role="alert" aria-live="assertive"></div>
+         <p class="xr-doodle-help" id="doodleHelp" data-i18n="doodle_step2_help">Click to add points. Apply closes the polygon automatically (or click near the first point). Shift+drag to pan. Wheel to zoom.</p>
+         <div class="xr-doodle-toolbar" aria-label="Doodle tools">
+            <div class="xr-doodle-toolbar-group xr-doodle-group-view" role="group" aria-labelledby="doodleViewGroupLabel">
+               <div class="xr-doodle-toolbar-group__head">
+                  <span class="xr-doodle-toolbar-group__label" id="doodleViewGroupLabel" data-i18n="doodle_group_view">View</span>
+               </div>
+               <div class="xr-doodle-toolbar-group__body">
+                  <div class="xr-mask-scale" aria-label="Doodle canvas scale">
+                     <span class="xr-mask-scale__label" data-i18n="doodle_zoom">Zoom</span>
+                     <button class="xr-modal__btn" id="doodleScaleDown" type="button" aria-label="Zoom out">−</button>
+                     <button class="xr-modal__btn" id="doodleScaleUp" type="button" aria-label="Zoom in">+</button>
+                     <span class="xr-mask-scale__val" id="doodleScaleVal">100%</span>
+                     <button class="xr-modal__btn" id="doodleScaleReset" type="button" data-i18n="doodle_zoom_reset">Reset</button>
+                     <button class="xr-modal__btn" id="doodleScaleCenter" type="button" data-i18n="doodle_zoom_center">Center</button>
+                  </div>
+               </div>
+            </div>
+            <div class="xr-doodle-toolbar-group xr-doodle-group-tool" role="group" aria-labelledby="doodleToolGroupLabel">
+               <div class="xr-doodle-toolbar-group__head">
+                  <span class="xr-doodle-toolbar-group__label" id="doodleToolGroupLabel" data-i18n="doodle_group_tool">Reference Tool</span>
+                  <p class="xr-doodle-tool-hint" id="doodleToolHint" data-i18n="doodle_tool_move_disabled">Load a reference image first to align it.</p>
+               </div>
+               <div class="xr-doodle-toolbar-group__body">
+                  <div class="xr-mask-toggle xr-doodle-tool-toggle" role="tablist" aria-label="Doodle reference tool">
+                     <button class="xr-modal__btn is-active" id="doodleToolDraw" type="button" role="tab" aria-selected="true" data-i18n="doodle_tool_draw">Place Points</button>
+                     <button class="xr-modal__btn" id="doodleToolMove" type="button" role="tab" aria-selected="false" data-i18n="doodle_tool_move" aria-disabled="true" tabindex="-1">Align Image</button>
+                  </div>
+               </div>
+            </div>
+            <div class="xr-doodle-toolbar-group xr-doodle-group-edit" role="group" aria-labelledby="doodleEditGroupLabel">
+               <div class="xr-doodle-toolbar-group__head">
+                  <span class="xr-doodle-toolbar-group__label" id="doodleEditGroupLabel" data-i18n="doodle_group_edit">Edit</span>
+               </div>
+               <div class="xr-doodle-toolbar-group__body">
+                  <button class="xr-modal__btn" id="doodleUndoPoint" type="button" data-i18n="modal_mask_undo">Undo</button>
+                  <button class="xr-modal__btn" id="doodleClearPoints" type="button" data-i18n="modal_mask_clear">Clear</button>
+                  <button class="xr-modal__btn" id="doodleSnap" type="button" data-i18n="doodle_snap_off" aria-pressed="false">Angle snap: off</button>
+               </div>
+            </div>
+         </div>
+         <div class="xr-mask-canvas-wrap">
+            <canvas id="doodleCanvas" width="720" height="520" tabindex="0" aria-label="Doodle polygon editor" aria-describedby="doodleHelp"></canvas>
+         </div>
+         <div class="xr-mask-actions">
+            <div class="xr-mask-actions__left">
+               <button class="xr-modal__btn" id="doodleBack" type="button" data-i18n="doodle_back">← Back</button>
+            </div>
+            <div class="xr-mask-actions__right">
+               <button class="xr-modal__btn" id="doodleCancel" type="button" data-i18n="modal_mask_cancel">Cancel</button>
+               <div class="xr-doodle-apply-wrap">
+                  <button class="xr-modal__btn is-primary" id="doodleApply" type="button" data-i18n="modal_mask_apply" aria-describedby="doodleApplyHint" disabled>Apply</button>
+                  <div class="xr-help-text xr-doodle-apply-hint" id="doodleApplyHint" data-i18n="doodle_apply_hint" hidden>Trace a polygon to apply.</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="xr-modal-overlay" id="autosaveModal" hidden data-ui-mode="global">
+   <div class="xr-modal xr-autosave-modal" role="dialog" aria-modal="true" aria-labelledby="autosaveTitle">
+      <div class="xr-autosave-modal__head">
+         <h2 id="autosaveTitle" data-i18n="autosave_title">Autosave</h2>
+         <button class="xr-modal__btn xr-autosave-close" id="autosaveCloseBtn" type="button" aria-label="Close autosave" data-i18n-aria="autosave_close">✕</button>
+      </div>
+      <div class="xr-autosave-meta">
+         <div class="xr-autosave-meta__row">
+            <span class="xr-autosave-meta__label" data-i18n="autosave_last">Last</span>
+            <span class="xr-autosave-meta__value" id="autosave-last-time">—</span>
+         </div>
+         <div class="xr-autosave-meta__row">
+            <span class="xr-autosave-meta__label" data-i18n="autosave_next">Next</span>
+            <span class="xr-autosave-meta__value" id="autosave-countdown">—</span>
+         </div>
+      </div>
+      <ul class="xr-autosave-list" id="autosaveList"></ul>
+      <div class="xr-autosave-settings">
+         <label class="xr-autosave-setting">
+            <input type="checkbox" id="autosaveEnabled" checked/>
+            <span class="xr-autosave-setting__label" data-i18n="autosave_enable">Enable autosave</span>
+         </label>
+         <div class="xr-autosave-setting">
+            <label class="xr-autosave-setting__label" for="autosaveInterval" data-i18n="autosave_interval">Interval</label>
+            <div class="xr-select-wrap">
+               <select class="xr-select" id="autosaveInterval">
+                  <option value="3" data-i18n="autosave_interval_3min">3 min</option>
+                  <option value="5" selected data-i18n="autosave_interval_5min">5 min</option>
+                  <option value="10" data-i18n="autosave_interval_10min">10 min</option>
+               </select>
+            </div>
+         </div>
+         <div class="xr-autosave-setting">
+            <label class="xr-autosave-setting__label" for="autosaveMaxSlots" data-i18n="autosave_max_slots">Max slots</label>
+            <div class="xr-select-wrap">
+               <select class="xr-select" id="autosaveMaxSlots">
+                  <option value="6">6</option>
+                  <option value="12" selected>12</option>
+                  <option value="24">24</option>
+               </select>
+            </div>
+         </div>
+      </div>
+      <div class="xr-autosave-actions">
+         <button class="xr-modal__btn" id="autosaveNowBtn" type="button" data-i18n="autosave_now">Autosave now</button>
+         <div class="xr-autosave-clear-confirm" id="autosaveClearConfirm">
+           <button class="xr-modal__btn is-danger" id="autosaveClearBtn" type="button" data-i18n="autosave_clear_all">Clear all</button>
+           <div class="xr-help-text xr-autosave-clear-confirm__msg" id="autosaveClearConfirmMsg" data-i18n="autosave_clear_all_confirm_ui" hidden>Are you sure? This cannot be undone.</div>
+           <div class="xr-ctl-row xr-autosave-clear-confirm__actions" id="autosaveClearConfirmActions" hidden>
+             <button class="xr-modal__btn is-danger" id="autosaveClearConfirmBtn" type="button" data-i18n="action_confirm">Confirm</button>
+             <button class="xr-modal__btn" id="autosaveClearCancelBtn" type="button" data-i18n="action_cancel">Cancel</button>
+           </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- The footer follows the editor in the assembled shell. On compact screens
+     it remains part of the document flow instead of covering active tools. -->
+<footer class="xr-app-footer" role="contentinfo" data-ui-mode="global">
+   <span data-i18n="footer_credits">Concept, design, and development by Francesco Perchiazzi. © 2026. Software and images belong to their respective owners.</span>
+</footer>
+</div>

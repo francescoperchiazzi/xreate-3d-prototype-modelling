@@ -1,0 +1,287 @@
+<a class="xr-skip-link" href="#xreate-editor-root" data-i18n="skip_to_editor">Skip to editor</a>
+<!--
+   Page shell:
+   - .xr-app contains a fixed <header> (branding + primary actions)
+   - Modals live at top-level so they can overlay any section
+   - <main> contains the editor workflow (scene/volumes → UV/texture/materials → export)
+   -->
+<div class="xr-app">
+   <!-- Header (fixed) — single merged row:
+      LEFT group  = Brand + tagline + ADD VOLUME button + EXPORT button group
+      RIGHT group = DRAWING MODE label + 3D Draft / Texture tabstrip + VERTICAL SEPARATOR + MENU button
+      Primary actions (Add Volume, Export) live here for a compact single-row header.
+      Menu for project/settings/help closes the right side after a visual divider. -->
+   <header class="xr-header" role="banner" data-ui-mode="global">
+      <div class="xr-header__content">
+      <div class="xr-header__left" data-ui-mode="global">
+         <div class="xr-header__brand" data-ui-mode="global">
+            <img class="xr-logo-mark" src="assets/ico_xreate.svg" alt="" aria-hidden="true"/>
+            <div class="xr-logo">XReate</div>
+            <div class="xr-header__claim">
+               <div class="xr-header__tagline" id="xrTagline" aria-label="XReate — draw, extrude, texture, export" data-i18n="app_tagline_short">Draw · Extrude · Texture · Export</div>
+            </div>
+         </div>
+         <div class="xr-header__toolbar" data-ui-mode="global">
+            <button class="xr-btn xr-btn--primary" id="btn-add-shape" type="button" aria-haspopup="menu" aria-controls="add-shape-menu" aria-expanded="false" data-ui-mode="global">
+               <span class="xr-btn__label" data-i18n="top_add_volume">Add Volume</span>
+               <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="chevron-down"></span>
+            </button>
+            <div class="xr-export-group" data-ui-mode="global">
+               <button class="xr-btn xr-export-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="xr-export-dropdown" aria-disabled="true" disabled id="btn-export-trigger" title="Export as GLB or USDZ" type="button">
+                  <span class="xr-btn__label" data-i18n="top_export">Export</span>
+                  <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="chevron-down"></span>
+               </button>
+               <div class="xr-export-dropdown" id="xr-export-dropdown" hidden role="menu" aria-label="Export" data-i18n-aria="aria_export_menu" data-ui-mode="global">
+                  <button class="xr-btn xr-export-item" id="btn-export-glb" type="button" role="menuitem" data-i18n="modal_glb_title">Export GLB</button>
+                  <button class="xr-btn xr-export-item" id="btn-export-usdz" type="button" role="menuitem" data-i18n="modal_usdz_title">Export USDZ</button>
+                  <button class="xr-btn xr-export-item" id="btn-export-atlas" type="button" role="menuitem" data-i18n="top_export_atlas">Export Texture Atlas</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="xr-header__right" data-ui-mode="global">
+         <div class="xr-header__mode-group" data-ui-mode="global">
+            <span class="xr-mode-bar__label" aria-hidden="true" data-i18n="top_drawing_mode">Drawing Mode</span>
+            <div id="trae-mode-selector" role="tablist" aria-label="Editor mode" data-ui-mode="global">
+               <button type="button" role="tab" data-mode-target="draft3d" aria-selected="true" tabindex="0" class="is-active">3D Draft</button>
+               <button type="button" role="tab" data-mode-target="texture" aria-selected="false" tabindex="-1" data-i18n="top_texture_mode">Texture</button>
+            </div>
+         </div>
+         <div class="xr-header__divider" aria-hidden="true"></div>
+         <div class="xr-header__actions" data-ui-mode="global">
+            <button class="xr-btn" id="btn-app-menu" type="button" aria-haspopup="dialog" aria-controls="app-menu" aria-label="Open menu" data-ui-mode="global">
+               <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="kebab"></span>
+               <span class="xr-btn__label" data-i18n="top_menu">Menu</span>
+            </button>
+         </div>
+      </div>
+      </div>
+   </header>
+   <div class="xr-add-shape" id="add-shape-menu" hidden role="menu" aria-label="Add volume" data-i18n-aria="aria_add_volume_menu" data-ui-mode="global">
+      <div class="xr-add-shape__surface" role="presentation" id="add-shape-body"></div>
+   </div>
+   <div class="xr-toasts" id="toast" hidden data-ui-mode="global"></div>
+   <a class="xr-bug-report" href="mailto:francesco@francescoperchiazzi.com?subject=XReate%20bug%20report&amp;body=Device%20and%20browser%3A%0A%0ASteps%20to%20reproduce%3A%0A%0AExpected%20result%3A%0A%0AActual%20result%3A%0A%0A" aria-label="Report a bug by email" data-i18n-aria="report_bug_aria" data-i18n-title="report_bug_title" title="Report a bug" data-ui-mode="global">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 7.3v9.2M8.8 9.2 5.4 6.7M8.5 12H4.6M8.8 14.8l-3.4 2.5M15.2 9.2l3.4-2.5M15.5 12h3.9M15.2 14.8l3.4 2.5"/><ellipse cx="12" cy="13" rx="3.5" ry="5.5"/><circle cx="12" cy="6.1" r="2"/></svg>
+      <span class="xr-visually-hidden" data-i18n="report_bug_label">Report a bug</span>
+   </a>
+   <div class="xr-menu-overlay" id="app-menu" hidden role="dialog" aria-labelledby="appMenuTitle" aria-modal="true" data-ui-mode="global">
+      <div class="xr-menu" role="document">
+         <div class="xr-menu__head">
+            <div class="xr-menu__title" id="appMenuTitle" data-i18n="menu_title">Menu</div>
+            <button aria-label="Close menu" data-i18n-aria="menu_close" class="xr-menu__close" id="btn-app-menu-close" type="button"></button>
+         </div>
+         <div class="xr-menu__body">
+            <div class="xr-menu__tabs" role="tablist" aria-label="Menu sections">
+            <button class="xr-menu-tab is-active" id="menuTabProject" type="button" role="tab" data-tab="project" aria-selected="true" aria-controls="menuTabPanelProject" data-i18n="menu_tab_project">Project</button>
+            <button class="xr-menu-tab" id="menuTabPreferences" type="button" role="tab" data-tab="preferences" aria-selected="false" aria-controls="menuTabPanelPreferences" tabindex="-1" data-i18n="menu_tab_preferences">Preferences</button>
+            <button class="xr-menu-tab" id="menuTabHelp" type="button" role="tab" data-tab="help" aria-selected="false" aria-controls="menuTabPanelHelp" tabindex="-1" data-i18n="menu_tab_help">Help</button>
+            <button class="xr-menu-tab" id="menuTabAbout" type="button" role="tab" data-tab="about" aria-selected="false" aria-controls="menuTabPanelAbout" tabindex="-1" data-i18n="menu_tab_about">About</button>
+            </div>
+            <div class="xr-menu__sections">
+               <div class="xr-menu__section" data-tab="project" role="tabpanel" id="menuTabPanelProject" aria-labelledby="menuTabProject">
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_identity">Identity</div>
+                     <div class="xr-menu__row">
+                        <button class="xr-project-name xr-project-name--menu" id="projectNameBtn" type="button" data-i18n-title="project_name_hint" title="Type a name for your project. Press Enter to confirm.">Untitled</button>
+                        <span class="xr-visually-hidden" id="projectNameHint" data-i18n="project_name_hint">Type a name for your project. Press Enter to confirm.</span>
+                     </div>
+                  </div>
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_file_ops">File operations</div>
+                     <div class="xr-menu__row">
+                        <button class="xr-btn" id="btn-project-save" type="button" data-i18n="menu_project_save" title="Save project to a .xreate.json file">Save (.xreate.json)</button>
+                        <button class="xr-btn" id="btn-project-load" type="button" data-i18n="menu_project_load" title="Load a .xreate.json project file">Load (.xreate.json)</button>
+                     </div>
+                  </div>
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_autosave">Autosave</div>
+                     <div class="xr-menu__row">
+                        <button class="xr-btn" id="btn-project-autosave" type="button" data-i18n="autosave_title" data-i18n-title="autosave_shortcut_hint" title="Open autosave history (Cmd/Ctrl+Shift+A)">Autosave</button>
+                     </div>
+                  </div>
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_danger_zone_title">Danger zone</div>
+                     <div class="xr-menu__meta" data-i18n="menu_danger_zone_desc">Clears autosave history and local preferences for this browser.</div>
+                     <div class="xr-menu__row" id="clearLocalDataRow">
+                        <button class="xr-btn is-danger" id="btn-clear-local-data" type="button" data-i18n="clear_local_data" title="Clear local storage (autosave, viewport, cache)">Clear local data</button>
+                     </div>
+                  </div>
+               </div>
+               <div class="xr-menu__section" data-tab="preferences" hidden role="tabpanel" id="menuTabPanelPreferences" aria-labelledby="menuTabPreferences">
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_theme">Theme</div>
+                     <fieldset aria-label="Theme" data-i18n-aria="menu_theme" class="xr-theme-toggle" role="radiogroup">
+                        <legend class="xr-visually-hidden">Select a colour scheme preference</legend>
+                        <label><input name="theme" type="radio" value="light"/><span class="xr-theme-toggle__text">Light</span></label>
+                        <label><input name="theme" type="radio" value="dark"/><span class="xr-theme-toggle__text">Dark</span></label>
+                        <label><input name="theme" type="radio" value="auto"/><span class="xr-theme-toggle__text">Auto</span></label>
+                     </fieldset>
+                  </div>
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_language">Language</div>
+                     <div class="xr-select-wrap">
+                        <select aria-label="Select interface language" data-i18n-aria="menu_language" class="xr-select" id="lang-select">
+                           <option value="en">English (EN)</option>
+                           <option value="fr">Français (FR)</option>
+                           <option value="de">Deutsch (DE)</option>
+                           <option value="es">Español (ES)</option>
+                           <option value="it">Italiano (IT)</option>
+                           <option value="pt">Português (PT)</option>
+                           <option value="bg">Български (BG)</option>
+                           <option value="cs">Čeština (CS)</option>
+                           <option value="hr">Hrvatski (HR)</option>
+                           <option value="da">Dansk (DA)</option>
+                           <option value="et">Eesti (ET)</option>
+                           <option value="fi">Suomi (FI)</option>
+                           <option value="el">Ελληνικά (EL)</option>
+                           <option value="ga">Gaeilge (GA)</option>
+                           <option value="lv">Latviešu (LV)</option>
+                           <option value="lt">Lietuvių (LT)</option>
+                           <option value="mt">Malti (MT)</option>
+                           <option value="nl">Nederlands (NL)</option>
+                           <option value="pl">Polski (PL)</option>
+                           <option value="ro">Română (RO)</option>
+                           <option value="sk">Slovenčina (SK)</option>
+                           <option value="sl">Slovenščina (SL)</option>
+                           <option value="sv">Svenska (SV)</option>
+                           <option value="hu">Magyar (HU)</option>
+                           <option value="ar">العربية</option>
+                           <option value="fa">فارسی</option>
+                           <option value="tr">Türkçe (TR)</option>
+                           <option value="he">עברית</option>
+                           <option value="ja">日本語</option>
+                           <option value="ko">한국어</option>
+                           <option value="zh">中文</option>
+                        </select>
+                     </div>
+                     <div class="xr-menu__meta" data-i18n="lang_supported_note">+ 31 languages (partial)</div>
+                  </div>
+               </div>
+               <div class="xr-menu__section" data-tab="help" hidden role="tabpanel" id="menuTabPanelHelp" aria-labelledby="menuTabHelp">
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_help">Help</div>
+                     <div class="xr-menu__row">
+                        <button class="xr-btn" id="btn-shortcuts" type="button" data-i18n="menu_shortcuts" data-i18n-title="menu_shortcuts_hint" title="Open keyboard shortcuts (H)">Keyboard shortcuts</button>
+                     </div>
+                  </div>
+                  <div class="xr-menu__group">
+                     <div class="xr-menu__label" data-i18n="menu_debug">Debug</div>
+                     <div class="xr-menu__row">
+                        <button class="xr-btn" id="btn-debug-usda" type="button" data-i18n="menu_debug_usda">Download USDA</button>
+                        <button class="xr-btn" id="btn-debug-usdz-report" type="button" data-i18n="menu_debug_usdz_report">Download USDZ report (JSON)</button>
+                     </div>
+                  </div>
+                  <div class="xr-menu__group xr-menu__row">
+                     <button aria-controls="share-modal" aria-haspopup="dialog" aria-expanded="false" class="xr-btn" id="btn-share" type="button" data-i18n="menu_share">Share</button>
+                  </div>
+               </div>
+               <div class="xr-menu__section" data-tab="about" hidden role="tabpanel" id="menuTabPanelAbout" aria-labelledby="menuTabAbout" aria-label="About XReate">
+                  <div class="xr-card xr-menu__about">
+                     <p class="xr-app-tagline" data-i18n="about_tagline">Prototype scene props and immersive XR environments with primitive volumes, mapped surfaces, and rapid device-ready exports.</p>
+                     <p class="xr-about-note" data-i18n="about_scene_purpose">XReate is a browser-native sketchbook for blocking out props, scenography, and spatial prototypes for videogames and immersive XR experiences. It is dedicated to Federico Torre, whose work in cinema, theatre, and scenography made space feel alive before it was built.</p>
+                     <p class="xr-about-note" data-i18n="about_agentic_coding">This web app was conceived, designed, and iterated with Agentic Coding: human direction and critical review guide an AI-assisted implementation process.</p>
+                     <p class="xr-about-note" data-i18n="translations_ai_note">Translation note: parts of the interface were drafted with AI and may contain inaccuracies.</p>
+                     <p class="xr-about-author">By <a class="xr-link" href="https://www.francescoperchiazzi.com" rel="noopener noreferrer" target="_blank">Francesco Perchiazzi</a></p>
+                     <p class="xr-about-note"><a class="xr-link" href="https://threejs.org/" target="_blank" rel="noopener noreferrer" aria-label="Built with Three.js (opens in new tab)" data-i18n-aria="aria_built_with_three_new_tab">Built with Three.js ↗</a></p>
+                     <hr/>
+                     <p><strong data-i18n="about_space_interface">Space is the interface.</strong></p>
+                     <p class="xr-about-note" data-i18n="about_uv_scope"><strong>What the UV tools are for.</strong> The UV modes are simplified educational abstractions for learning how surfaces, textures, and spatial relationships behave.</p>
+                     <p class="xr-about-note" data-i18n="about_limits"><strong>Why limitations are intentional.</strong> Constraints make construction, scale, and iteration legible. XReate is not a replacement for professional 3D modelling software.</p>
+                     <p class="xr-about-note" data-i18n="about_blender">For advanced modelling, animation, rigging, materials, or production pipelines, use dedicated tools such as Blender.</p>
+                     <hr/>
+                     <p class="xr-about-note">Tip: if you export USDZ, open it in Safari on iPhone/iPad for Quick Look AR.</p>
+                     <hr/>
+                     <p class="xr-about-note"><strong>Privacy:</strong> 100% client-side generation. No images or generated files are uploaded to any server.</p>
+                     <hr/>
+                     <p class="xr-about-note" data-i18n="dedication_line_1">For Federico — who taught me how worlds are imagined before they are built.</p>
+                     <p class="xr-about-note" data-i18n="about_federico">Federico Torre was an Italian actor whose work crossed theatre, cinema, radio, and television. His formation in New York at the Theater Lab and his attention to bodies in space continue to inform this project’s love of scenography and lived worlds.</p>
+                     <p class="xr-about-note">XReate is dedicated to <a class="xr-link" href="https://it.wikipedia.org/wiki/Federico_Torre_(attore)" rel="noopener noreferrer" target="_blank">Federico Torre</a>.</p>
+                     <blockquote class="xr-about-epigraph" lang="en">
+                        <p>“Cinema captured me when I was young and never let me go.</p>
+                        <p>I learned this craft between the pavement and New York: by living, observing, and studying at the Theater Lab.</p>
+                        <p>Because cinema, before anything else, is life.</p>
+                        <p>And this life continues in those I met, in those who cared for me.”</p>
+                     </blockquote>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <input accept=".xreate.json,application/json" id="projectFileInput" type="file" hidden=""/>
+   <!--
+      Share Modal:
+      - Opened by the "Share" action in the Menu
+      - Each .share-tile triggers a platform-specific action in JS
+      - Uses role="dialog" + aria-modal for accessibility
+      -->
+   <div aria-labelledby="share-title" aria-modal="true" class="xr-sheet-overlay" hidden="" id="share-modal" role="dialog" data-ui-mode="global">
+      <div class="xr-sheet" role="document">
+         <div class="xr-sheet__head">
+            <div class="xr-sheet__title" id="share-title" data-i18n="share_title">Share XReate</div>
+            <button aria-label="Close share panel" data-i18n-aria="share_close" class="xr-sheet__close" id="share-close" type="button"></button>
+         </div>
+         <div class="xr-share-grid" role="list">
+            <button class="xr-share-tile" data-share="bluesky" type="button">
+            <span aria-hidden="true" class="xr-share-tile__icon"></span>
+            <span class="xr-share-tile__label" data-i18n="share_platform_bluesky">Bluesky</span>
+            </button>
+            <button class="xr-share-tile" data-share="x" type="button">
+            <span aria-hidden="true" class="xr-share-tile__icon"></span>
+            <span class="xr-share-tile__label" data-i18n="share_platform_x">X (formerly Twitter)</span>
+            </button>
+            <button class="xr-share-tile" data-share="mastodon" type="button">
+            <span aria-hidden="true" class="xr-share-tile__icon"></span>
+            <span class="xr-share-tile__label" data-i18n="share_platform_mastodon">Mastodon</span>
+            </button>
+            <button class="xr-share-tile" data-share="linkedin" type="button">
+            <span aria-hidden="true" class="xr-share-tile__icon"></span>
+            <span class="xr-share-tile__label" data-i18n="share_platform_linkedin">LinkedIn</span>
+            </button>
+            <button class="xr-share-tile" data-share="facebook" type="button">
+            <span aria-hidden="true" class="xr-share-tile__icon"></span>
+            <span class="xr-share-tile__label" data-i18n="share_platform_facebook">Facebook</span>
+            </button>
+            <button class="xr-share-tile" data-share="copy" type="button">
+            <span aria-hidden="true" class="xr-share-tile__icon"></span>
+            <span class="xr-share-tile__label" data-i18n="share_copy_link" id="share-copy-label">Copy Link</span>
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <div aria-labelledby="mastodon-title" aria-modal="true" class="xr-sheet-overlay" hidden="" id="mastodon-modal" role="dialog" data-ui-mode="global">
+      <div class="xr-sheet" role="document">
+         <div class="xr-sheet__head">
+            <div class="xr-sheet__title" id="mastodon-title" data-i18n="mastodon_instance_title">Mastodon instance</div>
+            <button aria-label="Close" data-i18n-aria="mastodon_instance_close" class="xr-sheet__close" id="mastodon-close" type="button"></button>
+         </div>
+         <div class="xr-sheet__section">
+            <div class="xr-sheet__hint" data-i18n="mastodon_instance_desc">Enter your Mastodon instance (e.g., mastodon.social).</div>
+            <label class="xr-visually-hidden" for="mastodon-instance-input">Mastodon instance</label>
+            <input autocapitalize="none" autocomplete="off" class="xr-project-name-input" data-i18n-placeholder="mastodon_instance_placeholder" id="mastodon-instance-input" spellcheck="false" type="text"/>
+            <div class="xr-sheet__actions">
+               <button class="xr-btn" id="mastodon-cancel" type="button" data-i18n="mastodon_instance_cancel">Cancel</button>
+               <button class="xr-btn xr-btn--primary" id="mastodon-continue" type="button" data-i18n="mastodon_instance_continue">Continue</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!--
+      Image Modal:
+      - Reserved for future click-to-zoom assets (currently not wired in JS)
+      - Caption is plain text (no link parsing at the moment)
+      -->
+   <div aria-label="Image preview" aria-modal="true" class="xr-image-overlay" hidden="" id="image-modal" role="dialog" data-ui-mode="global">
+      <div class="xr-image" role="document">
+         <div class="xr-image__head">
+            <button aria-label="Close image preview" class="xr-image__close" id="image-close" type="button"></button>
+         </div>
+         <figure class="xr-image__figure">
+            <img alt="Preview image" id="image-full" src="" aria-describedby="image-caption"/>
+            <figcaption class="xr-image__caption" id="image-caption"></figcaption>
+         </figure>
+      </div>
+   </div>

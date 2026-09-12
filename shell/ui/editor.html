@@ -1,0 +1,342 @@
+<!--
+   Main workflow:
+   - Step 1: build a scene by adding primitive volumes
+   - Step 2: adjust transforms, UV map, texture and materials
+   - Step 3: export (GLB / USDZ) and download the result
+   -->
+<main aria-label="Editor">
+   <section class="xr-editor-section" id="editor">
+      <div class="xr-editor-embed">
+            <div class="xr-editor-frame">
+               <div class="xr-editor" id="xreate-editor-root" aria-label="XReate editor">
+                  <div class="xr-editor-layout">
+                     <div class="xr-scene-overlay" id="sceneOverlay"></div>
+                     <aside class="xr-panel-tree" id="scenePanel" aria-label="Composition" data-ui-mode="global">
+                        <div class="xr-panel-head">
+                           <div class="xr-panel-title" data-i18n="scene_title">Composition</div>
+                           <div class="xr-panel-meta">
+                              <span id="treeCountBadge" aria-label="0 of 0 volumes"><span id="treeCountVis">0</span>/<span id="treeCountTotal">0</span></span>
+                           </div>
+                        </div>
+                        <div class="xr-tree-empty" id="treeEmptyState" hidden>
+                           <p class="xr-tree-empty__text" data-i18n="tree_empty_msg">Your composition is empty. Add your first volume using the 'Add Volume' button in the header to get started.</p>
+                        </div>
+                        <div class="xr-tree-list" id="treeList" role="list"></div>
+                        <div class="xr-tree-actions">
+                           <div class="xr-tree-actions__title">Actions</div>
+                           <div class="xr-tree-actions__row xr-tree-actions__row--main">
+                             <button class="xr-ctl-btn" id="btn-tree-dup" type="button">
+                               <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="copy"></span>
+                               <span data-i18n="tree_duplicate">Duplicate</span>
+                             </button>
+                             <button class="xr-ctl-btn is-danger" id="btn-tree-del" type="button">
+                               <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="trash"></span>
+                               <span data-i18n="tree_delete">Delete</span>
+                             </button>
+                           </div>
+                           <div class="xr-tree-actions__row xr-tree-actions__row--move">
+                             <button class="xr-ctl-btn" id="btn-tree-up" type="button" aria-label="Move up in list" data-i18n-aria="aria_tree_up">
+                               <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="up"></span>
+                               <span>Order</span>
+                             </button>
+                             <button class="xr-ctl-btn" id="btn-tree-down" type="button" aria-label="Move down in list" data-i18n-aria="aria_tree_down">
+                               <span class="xr-btn__icon" aria-hidden="true" data-xr-icon="down"></span>
+                               <span>Order</span>
+                             </button>
+                           </div>
+                        </div>
+                        <div class="xr-tree-delete" id="treeDeleteConfirm" hidden>
+                           <div class="xr-tree-delete__text" data-i18n="tree_delete_confirm">Delete selected volume?</div>
+                           <div class="xr-tree-delete__actions">
+                              <button class="xr-ctl-btn is-danger" id="btn-tree-del-confirm" type="button" data-i18n="tree_delete_yes">Delete</button>
+                              <button class="xr-ctl-btn" id="btn-tree-del-cancel" type="button" data-i18n="tree_delete_no">Cancel</button>
+                           </div>
+                        </div>
+                     </aside>
+                     <section class="xr-panel-viewport" aria-label="3D viewport" data-ui-mode="global">
+                        <div class="xr-three-wrap" id="threeWrap">
+                           <div class="xr-viewport-empty" id="viewportEmptyOverlay" hidden>
+                              <div class="xr-viewport-empty__icon" aria-hidden="true">+</div>
+                              <div class="xr-viewport-empty__text" data-i18n="viewport_empty_msg">Click 'Add Volume' to place your first object.</div>
+                              <button class="xr-ctl-btn xr-viewport-empty__action" id="btn-viewport-add-volume" type="button">Add a volume</button>
+                           </div>
+                           <canvas id="threeCanvas" aria-label="3D viewport canvas" data-i18n-aria="aria_viewport_canvas" aria-describedby="viewportHelp"></canvas>
+                           <div class="xr-viewport-wasd-banner is-visible" id="wasdBanner" role="status" aria-live="polite">WASD  NAVIGATION ACTIVE</div>
+                           <span class="xr-visually-hidden" id="viewportHelp" data-i18n="viewport_help">Viewport: click to select volumes. Use the Tool buttons to Move/Rotate/Scale the selected volume. Use the View buttons (Free/Front/Top/Isometric) to change camera. Use Fit view to frame the selection.</span>
+                           <div class="xr-viewport-hud" aria-label="3D viewport controls" role="region">
+                              <div class="xr-viewport-hud__gizmo">
+                                 <div class="xr-viewport-hud__caption" data-i18n="hud_tool">Tool</div>
+                                 <div class="xr-ctl-row xr-viewport-hud__gizmo-row" id="gizmoToolGroup" role="radiogroup" aria-label="Transform tool">
+                                    <button class="xr-ctl-btn is-active" id="btn-gizmo-move" type="button" role="radio" aria-checked="true" tabindex="0" aria-controls="threeCanvas">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M10 2.5 L10 6.5 M10 13.5 L10 17.5 M2.5 10 L6.5 10 M13.5 10 L17.5 10"/>
+                                          <path d="M10 4 L8.5 5.5 M10 4 L11.5 5.5 M10 16 L8.5 14.5 M10 16 L11.5 14.5"/>
+                                          <path d="M4 10 L5.5 8.5 M4 10 L5.5 11.5 M16 10 L14.5 8.5 M16 10 L14.5 11.5"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="gizmo_move">Move</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-gizmo-rotate" type="button" role="radio" aria-checked="false" tabindex="-1" aria-controls="threeCanvas">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M15.5 5.5 A6 6 0 1 0 17 10"/>
+                                          <path d="M15.5 2.5 L15.5 5.5 L12.5 5.5"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="gizmo_rotate">Rotate</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-gizmo-scale" type="button" role="radio" aria-checked="false" tabindex="-1" aria-controls="threeCanvas">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M4.5 4.5 L9.5 4.5 M4.5 4.5 L4.5 9.5"/>
+                                          <path d="M15.5 15.5 L10.5 15.5 M15.5 15.5 L15.5 10.5"/>
+                                          <path d="M4.5 15.5 L9.5 15.5 M4.5 15.5 L4.5 10.5"/>
+                                          <path d="M15.5 4.5 L10.5 4.5 M15.5 4.5 L15.5 9.5"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="gizmo_scale">Scale</span>
+                                    </button>
+                                 </div>
+                              </div>
+                              <div class="xr-viewport-hud__viewport" aria-label="Viewport toggles" role="region">
+                                 <div class="xr-viewport-hud__caption" data-i18n="hud_display">Display</div>
+                                 <div class="xr-ctl-row xr-viewport-hud__gizmo-row xr-viewport-hud__panel-row" aria-label="Viewport">
+                                    <button class="xr-ctl-btn" id="btn-wireframe" type="button" aria-pressed="false" aria-label="Toggle wireframe" data-i18n-aria="aria_toggle_wireframe">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <rect x="3" y="3" width="14" height="14"/>
+                                          <path d="M3 10 L17 10 M10 3 L10 17"/>
+                                          <path d="M3 6.5 L17 6.5 M3 13.5 L17 13.5 M6.5 3 L6.5 17 M13.5 3 L13.5 17"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="hud_wireframe">Wireframe</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-flatlight" type="button" aria-pressed="false" aria-label="Toggle flat lighting" data-i18n-aria="aria_toggle_flatlight">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <circle cx="10" cy="10" r="3.5"/>
+                                          <path d="M10 2 L10 4.5 M10 15.5 L10 18 M2 10 L4.5 10 M15.5 10 L18 10"/>
+                                          <path d="M4.3 4.3 L6.1 6.1 M13.9 13.9 L15.7 15.7 M4.3 15.7 L6.1 13.9 M13.9 6.1 L15.7 4.3"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="hud_flatlight">Flat light</span>
+                                    </button>
+                                 </div>
+                                 <div class="xr-status xr-status--viewport" id="statusText" data-i18n="status_ready" aria-live="polite" aria-atomic="true">Ready</div>
+                                 <div class="xr-status xr-status--viewport" id="viewportGeoStats" aria-hidden="true"></div>
+                              </div>
+                              <div class="xr-viewport-hud__view" aria-label="View controls" role="region">
+                                 <div class="xr-viewport-hud__caption" data-i18n="hud_view">View</div>
+                                 <div class="xr-ctl-row xr-viewport-hud__gizmo-row xr-viewport-hud__panel-row" aria-label="View">
+                                    <button class="xr-ctl-btn is-active" id="btn-view-free" type="button" aria-pressed="true">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <circle cx="10" cy="10" r="1.5"/>
+                                          <path d="M10 4 L10 7 M10 13 L10 16 M4 10 L7 10 M13 10 L16 10"/>
+                                          <path d="M5.76 5.76 L7.88 7.88 M12.12 12.12 L14.24 14.24 M5.76 14.24 L7.88 12.12 M12.12 7.88 L14.24 5.76"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="view_free">Free</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-view-front" type="button" aria-pressed="false">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <rect x="3.5" y="4.5" width="13" height="11"/>
+                                          <path d="M3.5 10 L16.5 10 M10 4.5 L10 15.5"/>
+                                          <path d="M2 16.5 L18 16.5"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="view_front">Front</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-view-top" type="button" aria-pressed="false">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M3 6 L10 2 L17 6 L10 10 Z"/>
+                                          <path d="M3 6 L10 14 L17 6 M10 10 L10 14"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="view_top">Top</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-view-iso" type="button" aria-pressed="false">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M10 2.5 L17 6.5 L17 13.5 L10 17.5 L3 13.5 L3 6.5 Z"/>
+                                          <path d="M10 2.5 L10 17.5 M3 6.5 L17 13.5 M17 6.5 L3 13.5"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="view_iso">Isometric</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-view-pan" type="button" aria-pressed="false" aria-label="Pan camera tool">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M10 2 L10 6 M10 14 L10 18 M2 10 L6 10 M14 10 L18 10"/>
+                                          <path d="M10 3.5 L8.5 5 M10 3.5 L11.5 5 M10 16.5 L8.5 15 M10 16.5 L11.5 15 M3.5 10 L5 8.5 M3.5 10 L5 11.5 M16.5 10 L15 8.5 M16.5 10 L15 11.5"/>
+                                          <circle cx="10" cy="10" r="1.25"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label">Pan</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-view-fit" type="button">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <path d="M4 7 L4 4 L7 4 M16 7 L16 4 L13 4 M4 13 L4 16 L7 16 M16 13 L16 16 L13 16"/>
+                                          <rect x="6" y="6" width="8" height="8"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__label" data-i18n="view_fit">Fit view</span>
+                                    </button>
+                                 </div>
+                              </div>
+                              <div class="xr-viewport-scale" id="viewportScaleLabel" aria-hidden="true"></div>
+                              <div class="xr-viewport-uv" id="infoUV" aria-hidden="true"></div>
+                              <div class="xr-viewport-dims" id="viewportDimsLabel" aria-hidden="true"></div>
+                              <div class="xr-viewport-xform" id="viewportXformReadout" aria-hidden="true" hidden></div>
+                           </div>
+                        </div>
+                     </section>
+                     <aside class="xr-panel-surface" aria-label="Surface panel" data-i18n-aria="aria_surface_panel" role="region" data-scrollable="false" data-ui-mode="global">
+                        <input accept="image/*" hidden="" id="imgFileInput" type="file" disabled/>
+                        <div class="xr-panel-empty" id="surfaceEmptyMessage" hidden>
+                           <p class="xr-panel-empty__msg" id="surfaceEmptyMessageText"></p>
+                        </div>
+                        <div class="xr-inspector" id="surfaceSections">
+                           <div class="xr-inspector-section" data-collapsed="false" id="inspector-surface">
+                              <button class="xr-inspector-section__header" type="button" aria-controls="inspector-surface-body" aria-expanded="true">
+                                 <span id="surfacePanelTitle" data-i18n="inspector_surface">Surface</span>
+                                 <span class="xr-inspector-section__chevron xr-btn__icon" aria-hidden="true" data-xr-icon="chevron-down"></span>
+                              </button>
+                              <div class="xr-inspector-section__body" id="inspector-surface-body">
+
+                                 <h3 class="xr-surface-section-title">Texture Editing</h3>
+
+                                 <div class="xr-draw-wrap" id="drawWrap">
+                                   <canvas height="512" id="imageCanvas" width="512" role="img" aria-label="Base image layer" data-i18n-aria="aria_base_image"></canvas>
+                                   <canvas height="512" id="uvOverlay" width="512" role="img" aria-label="UV projection preview" data-i18n-aria="aria_uv_overlay"></canvas>
+                                 </div>
+                                 <button class="xr-ctl-btn xr-ctl-btn--full xr-uv-workspace-btn" id="btn-uv-workspace" type="button" aria-controls="uvWorkspaceModal" aria-labelledby="uvWorkspaceButtonLabel">
+                                    <svg class="xr-uv-workspace-btn__icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter">
+                                       <path d="M7.5 3.5h-4v4M12.5 3.5h4v4M7.5 16.5h-4v-4M12.5 16.5h4v-4"/>
+                                    </svg>
+                                    <span id="uvWorkspaceButtonLabel" data-i18n="uv_workspace_open">Full-screen workspace</span>
+                                 </button>
+                                 <h4 class="xr-surface-section-subtitle">Image Transform</h4>
+                                 <div class="xr-img-zoom-bar" role="group" aria-label="Image zoom controls" data-i18n-aria="aria_image_zoom">
+                                    <button class="xr-ctl-btn" id="btn-img-zoom-in" type="button" aria-label="Zoom in" data-i18n-aria="aria_zoom_in" title="Zoom in">
+                                       <span class="xr-ctl-btn__hint" data-i18n="image_zoom_in_label">+ Scale up</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-img-zoom-out" type="button" aria-label="Zoom out" data-i18n-aria="aria_zoom_out" title="Zoom out">
+                                       <span class="xr-ctl-btn__hint" data-i18n="image_zoom_out_label">− Scale down</span>
+                                    </button>
+                                    <button class="xr-ctl-btn" id="btn-img-zoom-reset" type="button" aria-label="Reset zoom" data-i18n-aria="aria_zoom_reset" title="Reset zoom (1:1)">
+                                       <svg class="xr-ctl-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                          <rect x="5.5" y="5.5" width="9" height="9"/>
+                                          <path d="M5.5 8.5 L14.5 8.5 M8.5 5.5 L8.5 14.5"/>
+                                       </svg>
+                                       <span class="xr-ctl-btn__hint" data-i18n="image_zoom_reset_label">1:1 Reset scale</span>
+                                    </button>
+                                 </div>
+                                 <div class="xr-help-text" id="imgXformHint" hidden data-i18n="surface_image_transform_hint_disabled">Map an image to this surface first.</div>
+                                 <div id="surfaceImgXformControls">
+                                   <div class="xr-field-row">
+                                     <span class="xr-field-label" id="lblImgScale" data-i18n="image_scale">Scale</span>
+                                   <button class="xr-field-value xr-editable-val" id="imgScaleVal" type="button" aria-labelledby="lblImgScale" aria-describedby="imgXformHint">×1.00</button>
+                                   </div>
+                                   <input class="xr-field-slider" id="imgScale" max="2000" min="5" type="range" value="100" aria-labelledby="lblImgScale" aria-describedby="imgXformHint"/>
+                                   <div class="xr-field-row">
+                                     <span class="xr-field-label" id="lblImgRatio" data-i18n="image_ratio">Ratio</span>
+                                   <button class="xr-field-value xr-editable-val" id="imgRatioVal" type="button" aria-labelledby="lblImgRatio" aria-describedby="imgXformHint">1.00</button>
+                                   </div>
+                                   <input class="xr-field-slider" id="imgRatio" max="400" min="25" type="range" value="100" aria-labelledby="lblImgRatio" aria-describedby="imgXformHint"/>
+                                   <div class="xr-field-row">
+                                     <span class="xr-field-label" id="lblImgRotate" data-i18n="image_rotate">Rotate</span>
+                                   <button class="xr-field-value xr-editable-val" id="imgRotateVal" type="button" aria-labelledby="lblImgRotate" aria-describedby="imgXformHint">0°</button>
+                                   </div>
+                                   <input class="xr-field-slider" id="imgRotate" max="180" min="-180" type="range" value="0" aria-labelledby="lblImgRotate" aria-describedby="imgXformHint"/>
+                                 </div>
+
+
+
+                                 <h3 class="xr-surface-section-title">Image Management</h3>
+                                 <button class="xr-ctl-btn xr-ctl-btn--full" id="btn-import-image" type="button" data-i18n="image_import" disabled aria-describedby="layerEmptyHint">Import image</button>
+                                 <h3 class="xr-surface-section-title" data-i18n="layers_label">Layers</h3>
+                                 <div class="xr-layer-empty" id="layerEmptyHint" hidden data-i18n="layers_empty_hint">Select a volume and import an image to create layers.</div>
+                                 <div class="xr-layer-list" id="layerList" role="list"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </aside>
+                     <aside class="xr-panel-inspector" aria-label="Inspector panel" role="region" data-scrollable="false" data-ui-mode="global">
+                        <div class="xr-panel-empty" id="inspectorEmptyMessage" hidden>
+                           <p class="xr-panel-empty__msg" id="inspectorEmptyMessageText"></p>
+                        </div>
+                        <div class="xr-inspector" id="inspectorSections">
+                           <div class="xr-inspector-section" data-collapsed="false" data-ui-mode="texture" id="inspector-uv-controls">
+                              <div class="xr-inspector-section__static-title-row">
+                                 <h3 class="xr-surface-section-title xr-inspector-section__static-title">UV Mapping Projection</h3>
+                                 <a class="xr-info-btn" id="btn-uv-mode-help" href="https://en.wikipedia.org/wiki/Texture_mapping" target="_blank" rel="noopener noreferrer" aria-label="About UV modes — open Wikipedia reference" data-i18n-aria="aria_about_uv_modes" title="Learn more: Texture mapping on Wikipedia">?</a>
+                              </div>
+                              <div class="xr-inspector-section__body" id="inspector-uv-body">
+                                 <div class="xr-help-text xr-surface-section-help" id="uvModeHelp" hidden data-i18n="uv_mode_help">Projection modes control how a 2D image is wrapped around a 3D surface. Try all four to find the best fit for your shape.</div>
+                                 <div class="xr-uv-wrap-row" role="group" aria-label="UV mapping mode" data-i18n-aria="aria_uv_mode_group">
+                                    <div class="xr-select-wrap" aria-label="Mapping mode selector" data-i18n-aria="aria_mapping_selector">
+                                       <select class="xr-select" id="uvModeSelect" aria-label="UV mapping mode" data-i18n-aria="aria_uv_mapping">
+                                          <option value="sphere" data-i18n="uv_mode_spherical">Spherical</option>
+                                          <option value="box" data-i18n="uv_mode_box">Box</option>
+                                          <option value="planar" data-i18n="uv_mode_planar">Planar</option>
+                                          <option value="cylindrical" data-i18n="uv_mode_cylindrical">Cylindrical</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <button class="xr-ctl-btn xr-ctl-btn--full" id="btn-uv-checker" type="button" data-i18n="uv_checker_pattern" disabled>Apply checker pattern</button>
+                                 <span class="xr-visually-hidden" id="uvCheckerHint" data-i18n="uv_checker_hint">Applies a diagnostic grid pattern to help visualize UV distortion. Remove it before exporting.</span>
+                                 <div class="xr-help-text" id="uvHint" data-i18n="uv_panel_hint">Select a volume to configure how textures project onto its surface.</div>
+                                 <div class="xr-uv-tutorial">
+                                    <p class="xr-uv-tutorial__title">How to use UV mapping</p>
+                                    <ol class="xr-uv-tutorial__list">
+                                       <li><strong>Select a volume:</strong> click any object in the list or viewport.</li>
+                                       <li><strong>Switch to Texture mode:</strong> open the Texture tab at the top.</li>
+                                       <li><strong>Import an image:</strong> click <em>Import image</em> in the Surface panel on the right.</li>
+                                       <li><strong>Pick a projection:</strong> Spherical for orbs, Box for cubes, Planar for flats, Cylindrical for tubes.</li>
+                                       <li><strong>Apply checker:</strong> toggle <em>Apply checker pattern</em> to spot stretches and seams.</li>
+                                       <li><strong>Tweak Scale/Ratio/Rotate:</strong> in Surface → Image Transform to align the texture where you want it.</li>
+                                    </ol>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="xr-inspector-section" data-collapsed="false" id="inspector-shape" data-ui-mode="draft3d">
+                              <h3 class="xr-surface-section-title xr-inspector-section__static-title" id="inspectorPanelTitle" data-i18n="inspector_shape">Volume</h3>
+                              <div class="xr-inspector-section__body" id="inspector-shape-body">
+                                 <div class="xr-inspector-typehead" id="inspectorTypeHead" aria-label="Volume type">
+                                   <canvas class="xr-inspector-typehead__icon" id="inspectorTypeIcon" width="24" height="24" aria-hidden="true"></canvas>
+                                   <div class="xr-inspector-typehead__meta">
+                                     <div class="xr-inspector-typehead__type" id="shapeTypeVal">—</div>
+                                     <div class="xr-inspector-typehead__name"><span class="xr-field-label" data-i18n="inspector_selected">Selected</span> <span class="xr-inspector-typehead__nameval" id="selectedShapeVal">—</span></div>
+                                   </div>
+                                 </div>
+                                 <h3 class="xr-surface-section-title" data-i18n="inspector_geometry">Geometry</h3>
+                                 <div id="shapeParams"></div>
+                              </div>
+                           </div>
+                           <div class="xr-inspector-section" data-collapsed="false" id="inspector-transform" data-ui-mode="draft3d">
+                              <h3 class="xr-surface-section-title xr-inspector-section__static-title" data-i18n="inspector_transform">Transform</h3>
+                              <div class="xr-inspector-section__body" id="inspector-transform-body">
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapePosX" data-i18n="tr_pos_x">Pos X</span><button class="xr-field-value xr-editable-val" id="shapePosXVal" type="button" aria-labelledby="lblShapePosX" aria-label="Position X value">0.00</button></div>
+                                 <input class="xr-field-slider" id="shapePosX" max="200" min="-200" type="range" value="0" aria-labelledby="lblShapePosX"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapePosY" data-i18n="tr_pos_y">Pos Y</span><button class="xr-field-value xr-editable-val" id="shapePosYVal" type="button" aria-labelledby="lblShapePosY" aria-label="Position Y value">0.00</button></div>
+                                 <input class="xr-field-slider" id="shapePosY" max="200" min="-200" type="range" value="0" aria-labelledby="lblShapePosY"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapePosZ" data-i18n="tr_pos_z">Pos Z</span><button class="xr-field-value xr-editable-val" id="shapePosZVal" type="button" aria-labelledby="lblShapePosZ" aria-label="Position Z value">0.00</button></div>
+                                 <input class="xr-field-slider" id="shapePosZ" max="200" min="-200" type="range" value="0" aria-labelledby="lblShapePosZ"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapeRotX" data-i18n="tr_rot_x">Rot X</span><button class="xr-field-value xr-editable-val" id="shapeRotXVal" type="button" aria-labelledby="lblShapeRotX" aria-label="Rotation X value">0</button></div>
+                                 <input class="xr-field-slider" id="shapeRotX" max="180" min="-180" type="range" value="0" aria-labelledby="lblShapeRotX"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapeRotY" data-i18n="tr_rot_y">Rot Y</span><button class="xr-field-value xr-editable-val" id="shapeRotYVal" type="button" aria-labelledby="lblShapeRotY" aria-label="Rotation Y value">0</button></div>
+                                 <input class="xr-field-slider" id="shapeRotY" max="180" min="-180" type="range" value="0" aria-labelledby="lblShapeRotY"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapeRotZ" data-i18n="tr_rot_z">Rot Z</span><button class="xr-field-value xr-editable-val" id="shapeRotZVal" type="button" aria-labelledby="lblShapeRotZ" aria-label="Rotation Z value">0</button></div>
+                                 <input class="xr-field-slider" id="shapeRotZ" max="180" min="-180" type="range" value="0" aria-labelledby="lblShapeRotZ"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapeScaleX" data-i18n="tr_scale_x">Scale X</span><button class="xr-field-value xr-editable-val" id="shapeScaleXVal" type="button" aria-labelledby="lblShapeScaleX" aria-label="Scale X value">1.00</button></div>
+                                 <input class="xr-field-slider" id="shapeScaleX" max="300" min="1" type="range" value="100" aria-labelledby="lblShapeScaleX"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapeScaleY" data-i18n="tr_scale_y">Scale Y</span><button class="xr-field-value xr-editable-val" id="shapeScaleYVal" type="button" aria-labelledby="lblShapeScaleY" aria-label="Scale Y value">1.00</button></div>
+                                 <input class="xr-field-slider" id="shapeScaleY" max="300" min="1" type="range" value="100" aria-labelledby="lblShapeScaleY"/>
+                               <div class="xr-field-row"><span class="xr-field-label" id="lblShapeScaleZ" data-i18n="tr_scale_z">Scale Z</span><button class="xr-field-value xr-editable-val" id="shapeScaleZVal" type="button" aria-labelledby="lblShapeScaleZ" aria-label="Scale Z value">1.00</button></div>
+                                 <input class="xr-field-slider" id="shapeScaleZ" max="300" min="1" type="range" value="100" aria-labelledby="lblShapeScaleZ"/>
+                               <div class="xr-field-row xr-scale-lock-row" id="uniformScaleRow">
+                                 <span class="xr-field-label xr-scale-lock-row__label" data-i18n="tr_uniform_scale_label">Uniform scale</span>
+                                 <button class="xr-scale-lock-btn" id="btn-scale-uniform" type="button" aria-pressed="true" aria-label="Toggle uniform scale" data-i18n-aria="aria_uniform_scale" data-i18n-title="tr_uniform_scale_title" title="Uniform scale (locked)">
+                                   <svg viewBox="0 0 874 870" aria-hidden="true" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="0.25" stroke-linejoin="round">
+                                     <path d="M615.09 44.16C720.54 37.1 813.27 114.12 826.8 218.54C829.48 239.24 828.76 260.93 824.69 281.38C818.74 311.28 806.21 338.51 788.65 363.18C779.52 376 767.78 386.98 756.7 398.11C743.73 411.14 730.67 424.09 717.7 437.12C695.59 459.32 673.32 481.37 651.23 503.59C635.28 519.63 619.71 536.89 600.87 549.53C563.5 574.61 517.71 588.43 472.42 584.39C453.54 582.71 435.27 578.95 417.43 572.47C395.85 564.64 375.47 552.65 358.15 537.7C351.32 531.81 344.16 526.13 339.23 518.43C322.55 492.38 333.51 456.15 362.48 444.78C377.58 438.85 394.73 440.53 408.38 449.33C413.17 452.42 416.94 456.65 421.21 460.36C425.78 464.33 430.83 467.89 436.01 471.01C453.37 481.46 473.78 485.89 493.91 484.73C534.97 482.38 556.06 457.3 582.92 430.49C617.97 395.49 653.12 360.59 687.99 325.41C709.71 303.5 724.93 285.78 728.01 253.41C734 190.48 680.38 136.99 617.29 144.13C604.82 145.54 592.63 149.39 581.54 155.25C566.97 162.96 556.16 174.55 544.6 186C530.87 199.6 517.15 213.23 503.56 226.97C494.83 235.8 486.35 245.99 475.4 252.09C452.97 264.59 424.98 256.47 410.45 236.29C407.7 232.46 405.7 227.84 404.23 223.39C393.24 190.05 419.14 169.76 440.05 149.13C452.08 137.27 463.92 125.23 475.89 113.32C486.36 102.89 496.77 91.97 508.82 83.34C540.1 60.92 576.41 46.74 615.09 44.16ZM365.97 291.69C419.99 286.24 474.97 307.2 515.09 342.58C523.78 350.25 531.42 359.34 534.78 370.62C541.45 392.97 531.32 417.36 511.07 428.66C495.19 437.52 474.85 436.6 459.68 426.69C450.63 420.78 443.71 412.25 434.44 406.51C416.69 395.5 396.27 390.23 375.39 391.18C334.07 393.08 314.06 416.69 287.1 443.51C251.86 478.57 217 514.03 181.63 548.98C159.67 570.67 142.07 591.1 139.93 623.66C135.76 687.16 188.91 741.08 253.52 731.48C265.23 729.74 276.65 726.14 287.07 720.48C301.92 712.42 313.29 700.29 325.03 688.39C337.41 675.83 350.03 663.51 362.47 651.01C372.61 640.83 382.25 628.96 395.38 622.62C421.19 610.16 452.23 623.79 462.78 649.63C474.95 679.46 456.77 698.22 437.52 717.3C429.53 725.23 421.6 733.22 413.63 741.18C393.36 761.45 373.86 783.36 349.85 799.19C296.44 834.42 227.47 841.97 167.64 818.96C70.99 781.77 20.21 677.37 47.29 577.71C62.4 522.1 97.91 491.39 136.8 452.41C162.77 426.37 188.87 400.46 214.81 374.4C233.81 355.31 252.25 335.28 275.35 321.15C303.17 304.13 333.59 294.95 365.97 291.69Z"/>
+                                   </svg>
+                                   <span class="xr-scale-lock-btn__state" data-state-label>ON</span>
+                                 </button>
+                               </div>
+                               <div class="xr-help-text xr-transform-scale-hint" data-i18n="tr_scale_hint">Scale values represent multipliers relative to the base unit (1u = 1m).</div>
+                               <div class="xr-ctl-row xr-transform-reset-row">
+                                 <button class="xr-ctl-btn" id="btn-tr-reset-pos" type="button" aria-label="Reset position to origin" data-i18n="tr_reset_position" data-i18n-aria="aria_reset_position">Reset position</button>
+                                 <button class="xr-ctl-btn" id="btn-tr-reset-rot" type="button" aria-label="Reset rotation" data-i18n="tr_reset_rotation" data-i18n-aria="aria_reset_rotation">Reset rotation</button>
+                                 <button class="xr-ctl-btn" id="btn-tr-reset-scale" type="button" aria-label="Reset scale to default" data-i18n="tr_reset_scale" data-i18n-aria="aria_reset_scale">Reset scale</button>
+                               </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                     </aside>
+                     </div>
+                  </div>
+                  <div class="xr-tooltip" id="tooltip" data-ui-mode="global"></div>

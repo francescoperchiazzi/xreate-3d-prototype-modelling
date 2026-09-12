@@ -1,0 +1,167 @@
+{
+  "format": "xreate",
+  "version": "2.2.0",
+  "project": {
+    "id": "xreate_example_spatial_study_alcove",
+    "name": "Spatial Study Alcove",
+    "textureMode": "per-shape",
+    "selectedId": "alcove_orb",
+    "metadata": {
+      "authorship": "ai-generated"
+    },
+    "shapes": [
+      {
+        "id": "alcove_platform",
+        "name": "Platform · Cylinder",
+        "type": "cylinder",
+        "params": { "radiusTop": 0.45, "radiusBottom": 0.45, "height": 0.04, "segments": 48, "heightSegments": 2, "openEnded": false },
+        "transform": { "position": { "x": 0, "y": 0.02, "z": 0 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#17202b", "roughness": 0.42, "metalness": 0.48 }
+      },
+      {
+        "id": "alcove_platform_ring",
+        "name": "Platform ring · Torus",
+        "type": "torus",
+        "params": { "radius": 0.35, "tube": 0.012, "radialSegments": 12, "tubularSegments": 48 },
+        "transform": { "position": { "x": 0, "y": 0.045, "z": 0 }, "rotation": { "x": 1.570796, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#55d6d2", "roughness": 0.24, "metalness": 0.5, "emissive": 0.22, "emissiveColor": "#2fbbb8" }
+      },
+      {
+        "id": "alcove_desk_stem",
+        "name": "Desk stem · Cylinder",
+        "type": "cylinder",
+        "params": { "radiusTop": 0.055, "radiusBottom": 0.075, "height": 0.29, "segments": 32, "heightSegments": 4, "openEnded": false },
+        "transform": { "position": { "x": 0, "y": 0.185, "z": 0 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#34475c", "roughness": 0.32, "metalness": 0.62 }
+      },
+      {
+        "id": "alcove_desk_top",
+        "name": "Work surface · Cylinder",
+        "type": "cylinder",
+        "params": { "radiusTop": 0.22, "radiusBottom": 0.22, "height": 0.035, "segments": 48, "heightSegments": 2, "openEnded": false },
+        "transform": { "position": { "x": 0, "y": 0.3475, "z": 0 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#d9e1e8", "roughness": 0.24, "metalness": 0.4 }
+      },
+      {
+        "id": "alcove_orb",
+        "name": "Spatial anchor · Sphere",
+        "type": "sphere",
+        "params": { "radius": 0.055, "widthSegments": 32, "heightSegments": 20 },
+        "transform": { "position": { "x": 0, "y": 0.43, "z": 0 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#f5b74b", "roughness": 0.2, "metalness": 0.35, "emissive": 0.35, "emissiveColor": "#e69a2c" }
+      },
+      {
+        "id": "alcove_orb_halo",
+        "name": "Anchor halo · Torus",
+        "type": "torus",
+        "params": { "radius": 0.105, "tube": 0.008, "radialSegments": 12, "tubularSegments": 48 },
+        "transform": { "position": { "x": 0, "y": 0.43, "z": 0 }, "rotation": { "x": 1.570796, "y": 0.45, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#f5b74b", "roughness": 0.2, "metalness": 0.48, "emissive": 0.28, "emissiveColor": "#e69a2c" }
+      },
+      {
+        "id": "alcove_portal_left",
+        "name": "Portal left · Box",
+        "type": "box",
+        "params": { "width": 0.035, "height": 0.42, "depth": 0.045, "segments": 2 },
+        "transform": { "position": { "x": -0.36, "y": 0.25, "z": -0.25 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#5c7ba0", "roughness": 0.3, "metalness": 0.62 }
+      },
+      {
+        "id": "alcove_portal_right",
+        "name": "Portal right · Box",
+        "type": "box",
+        "params": { "width": 0.035, "height": 0.42, "depth": 0.045, "segments": 2 },
+        "transform": { "position": { "x": 0.36, "y": 0.25, "z": -0.25 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#5c7ba0", "roughness": 0.3, "metalness": 0.62 }
+      },
+      {
+        "id": "alcove_portal_beam",
+        "name": "Portal beam · Box",
+        "type": "box",
+        "params": { "width": 0.755, "height": 0.035, "depth": 0.045, "segments": 2 },
+        "transform": { "position": { "x": 0, "y": 0.46, "z": -0.25 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#5c7ba0", "roughness": 0.3, "metalness": 0.62 }
+      },
+      {
+        "id": "alcove_portal_node_left",
+        "name": "Portal node left · Sphere",
+        "type": "sphere",
+        "params": { "radius": 0.027, "widthSegments": 20, "heightSegments": 12 },
+        "transform": { "position": { "x": -0.36, "y": 0.46, "z": -0.25 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#ab85ff", "roughness": 0.22, "metalness": 0.28, "emissive": 0.25, "emissiveColor": "#8e66e5" }
+      },
+      {
+        "id": "alcove_portal_node_right",
+        "name": "Portal node right · Sphere",
+        "type": "sphere",
+        "params": { "radius": 0.027, "widthSegments": 20, "heightSegments": 12 },
+        "transform": { "position": { "x": 0.36, "y": 0.46, "z": -0.25 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#ab85ff", "roughness": 0.22, "metalness": 0.28, "emissive": 0.25, "emissiveColor": "#8e66e5" }
+      },
+      {
+        "id": "alcove_panel_left",
+        "name": "Spatial card left · Box",
+        "type": "box",
+        "params": { "width": 0.16, "height": 0.105, "depth": 0.012, "segments": 2 },
+        "transform": { "position": { "x": -0.23, "y": 0.48, "z": 0.08 }, "rotation": { "x": 0, "y": 0.3, "z": -0.12 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#e9eff3", "roughness": 0.18, "metalness": 0.2, "emissive": 0.08, "emissiveColor": "#d0edf0" }
+      },
+      {
+        "id": "alcove_panel_centre",
+        "name": "Spatial card centre · Box",
+        "type": "box",
+        "params": { "width": 0.18, "height": 0.12, "depth": 0.012, "segments": 2 },
+        "transform": { "position": { "x": 0.02, "y": 0.56, "z": 0.11 }, "rotation": { "x": 0, "y": -0.08, "z": 0.06 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#f5b74b", "roughness": 0.2, "metalness": 0.28, "emissive": 0.1, "emissiveColor": "#e69a2c" }
+      },
+      {
+        "id": "alcove_panel_right",
+        "name": "Spatial card right · Box",
+        "type": "box",
+        "params": { "width": 0.16, "height": 0.105, "depth": 0.012, "segments": 2 },
+        "transform": { "position": { "x": 0.25, "y": 0.5, "z": 0.07 }, "rotation": { "x": 0, "y": -0.34, "z": 0.1 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#e9eff3", "roughness": 0.18, "metalness": 0.2, "emissive": 0.08, "emissiveColor": "#d0edf0" }
+      },
+      {
+        "id": "alcove_seat_base",
+        "name": "Seat base · Cylinder",
+        "type": "cylinder",
+        "params": { "radiusTop": 0.13, "radiusBottom": 0.13, "height": 0.03, "segments": 32, "heightSegments": 2, "openEnded": false },
+        "transform": { "position": { "x": -0.22, "y": 0.055, "z": 0.24 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#33465a", "roughness": 0.44, "metalness": 0.36 }
+      },
+      {
+        "id": "alcove_seat_stem",
+        "name": "Seat stem · Cylinder",
+        "type": "cylinder",
+        "params": { "radiusTop": 0.025, "radiusBottom": 0.04, "height": 0.16, "segments": 24, "heightSegments": 3, "openEnded": false },
+        "transform": { "position": { "x": -0.22, "y": 0.145, "z": 0.24 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#33465a", "roughness": 0.34, "metalness": 0.58 }
+      },
+      {
+        "id": "alcove_seat_cushion",
+        "name": "Seat cushion · Cylinder",
+        "type": "cylinder",
+        "params": { "radiusTop": 0.14, "radiusBottom": 0.12, "height": 0.04, "segments": 32, "heightSegments": 3, "openEnded": false },
+        "transform": { "position": { "x": -0.22, "y": 0.245, "z": 0.24 }, "rotation": { "x": 0, "y": 0, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#ab85ff", "roughness": 0.42, "metalness": 0.08 }
+      },
+      {
+        "id": "alcove_memory_block",
+        "name": "Memory block · Cube",
+        "type": "cube",
+        "params": { "size": 0.09, "segments": 3 },
+        "transform": { "position": { "x": 0.28, "y": 0.105, "z": 0.23 }, "rotation": { "x": 0.2, "y": 0.45, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#55d6d2", "roughness": 0.26, "metalness": 0.42, "emissive": 0.1, "emissiveColor": "#2fbbb8" }
+      },
+      {
+        "id": "alcove_beacon",
+        "name": "Focus beacon · Cone",
+        "type": "cone",
+        "params": { "radius": 0.055, "height": 0.15, "segments": 24, "heightSegments": 3 },
+        "transform": { "position": { "x": 0.29, "y": 0.125, "z": -0.03 }, "rotation": { "x": 0, "y": 0.35, "z": 0 }, "scale": { "x": 1, "y": 1, "z": 1 } },
+        "material": { "baseColor": "#f5b74b", "roughness": 0.26, "metalness": 0.36, "emissive": 0.12, "emissiveColor": "#e69a2c" }
+      }
+    ]
+  }
+}

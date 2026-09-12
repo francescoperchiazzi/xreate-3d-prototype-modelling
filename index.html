@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+   XReate: 3D Prototype Modelling
+   © 2026 Francesco Perchiazzi
+    
+   License: MIT. See LICENSE.
+
+   DOCUMENT STRUCTURE:
+   - HTML: UI elements (modals, controls, canvas, etc.)
+   - CSS: Externally referenced via xreate.css for all styling
+  - JavaScript:
+    - Legacy editor factory: `engine/legacy/editor-inline.js` (imported by `engine/main.js`)
+    - Engine and shell modules: `engine/main.js` + `shell/main.js`
+   -->
+
+<html lang="en">
+   <head>
+      <!-- ── HEAD ─────────────────────────────────────────────────────────────
+           This file is intentionally a thin host:
+           - HTML mount point
+           - Legacy editor runtime loaded as a single external script
+           - Engine + shell loaded as ES modules
+           - Styling is external (xreate.css) as the single source of truth for UI styles
+           The goal of this <head> block is to keep the app static, cache-friendly, and
+           safe-by-default (within the constraints of a single-file runtime).
+      -->
+      <meta charset="utf-8"/>
+      <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport"/>
+      <!-- Security boundary for this static app.
+           NOTE: script-src allows 'unsafe-inline' to keep a single-file runtime working.
+           This CSP intentionally avoids 'unsafe-eval' unless strictly needed.
+      -->
+      <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' blob:; connect-src 'self' blob: https://fonts.googleapis.com https://fonts.gstatic.com; worker-src 'self' blob:"/>
+      <meta content="Francesco Perchiazzi" name="author"/>
+      <meta content="XReate is browser-native 3D prototype modelling: draw, extrude, texture, and export scene props, gameplay spaces, and XR ideas. Experimental and built for coders." name="description"/>
+      <meta content="XReate, experimental 3D prototyping, prototyping for coders, XR prototyping, game prototype, scene prop, spatial thinking, volumetric sketchbook, UV mapping, texture mapping, primitives, GLB, USDZ, AR Quick Look, browser-based, client-side, no upload, scenography" name="keywords"/>
+      <meta content="XReate · 3D Prototype Modelling · Francesco Perchiazzi" name="dc.title"/>
+      <!-- Favicons / pinned tab. -->
+      <link href="assets/ico_xreate.png" rel="icon" type="image/png"/>
+      <link href="assets/ico_xreate.png" rel="apple-touch-icon" sizes="180x180" type="image/png"/>
+      <link href="assets/ico_xreate.svg" rel="mask-icon" color="#4A4A4A"/>
+      <meta content="#4A4A4A" name="theme-color"/>
+      <!-- Open Graph -->
+      <meta property="og:title" content="XReate — 3D Prototype Modelling"/>
+      <meta property="og:description" content="Draw, extrude, texture, and export browser-native 3D prototypes for scene props, gameplay spaces, and XR ideas."/>
+      <meta property="og:image" content="https://www.francescoperchiazzi.com/apps/xreate/assets/ico_xreate.png"/>
+      <meta property="og:image:width" content="1080"/>
+      <meta property="og:image:height" content="1080"/>
+      <meta property="og:url" content="https://www.francescoperchiazzi.com/apps/xreate/"/>
+      <meta property="og:type" content="website"/>
+      <meta property="og:site_name" content="Francesco Perchiazzi"/>
+      <meta property="og:locale" content="en_US"/>
+      <!-- Twitter -->
+      <meta name="twitter:card" content="summary_large_image"/>
+      <meta name="twitter:title" content="XReate — 3D Prototype Modelling"/>
+      <meta name="twitter:description" content="Draw, extrude, texture, and export browser-native 3D prototypes for scene props, gameplay spaces, and XR ideas."/>
+      <meta name="twitter:image" content="https://www.francescoperchiazzi.com/apps/xreate/assets/ico_xreate.png"/>
+      <meta name="twitter:image:alt" content="XReate — 3D prototype modelling (GLB/USDZ export)"/>
+      <link href="https://www.francescoperchiazzi.com/apps/xreate/" rel="canonical"/>
+      <!-- Structured metadata for search/social previews. -->
+      <script type="application/ld+json">
+         {
+           "@context": "https://schema.org",
+           "@type": "SoftwareApplication",
+           "name": "XReate",
+           "softwareVersion": "0.1.0",
+           "applicationCategory": ["EducationApplication", "DeveloperApplication", "DesignApplication"],
+           "operatingSystem": "Web",
+           "isAccessibleForFree": true,
+           "offers": {
+             "@type": "Offer",
+             "price": "0",
+             "priceCurrency": "USD"
+           },
+           "author": {
+             "@type": "Person",
+             "name": "Francesco Perchiazzi",
+             "url": "https://www.francescoperchiazzi.com"
+           },
+           "description": "Browser-native 3D prototype modelling: draw, extrude, texture, and export scene props, gameplay spaces, and XR studies. Experimental and built for coders.",
+           "keywords": "experimental 3D prototyping, prototyping for coders, XR prototyping, game prototype, spatial thinking, UV mapping, texture mapping, GLB, USDZ, AR Quick Look",
+          "screenshot": "https://www.francescoperchiazzi.com/apps/xreate/assets/ico_xreate.png",
+           "url": "https://www.francescoperchiazzi.com/apps/xreate/",
+           "isPartOf": {
+             "@type": "WebSite",
+             "name": "Francesco Perchiazzi",
+             "url": "https://www.francescoperchiazzi.com"
+           },
+           "featureList": [
+             "Primitive volumes for fast spatial prototyping",
+             "Didactic UV mapping modes (planar, cylindrical, spherical, box)",
+             "Layered texture workflow (import, transform, paint)",
+             "Live 3D preview with material controls",
+             "GLB and USDZ export for AR and engine tests",
+             "No upload required (client-side processing)"
+           ],
+           "inLanguage": ["en","fr","de","es","it","pt","bg","cs","hr","da","et","fi","el","ga","lv","lt","mt","nl","pl","ro","sk","sl","sv","hu","ar","fa","tr","he","ja","ko","zh"]
+         }
+      </script>
+      <title>XReate — 3D Prototype Modelling</title>
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+      <meta http-equiv="Pragma" content="no-cache"/>
+      <meta http-equiv="Expires" content="0"/>
+      <!-- Styling is external by design (xreate.css is the UI source of truth). -->
+      <link href="xreate.css" rel="stylesheet"/>
+      <!-- Fonts are pulled at runtime (see README privacy note). Preconnect reduces TTFB. -->
+      <link href="https://fonts.googleapis.com" rel="preconnect"/>
+      <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+      <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&amp;family=Noto+Sans+Hebrew:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;600;700&amp;family=Noto+Sans+KR:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+      <!-- Three.js is shipped as a single vendored file to avoid build tooling. -->
+      <script src="vendor/three.min.js"></script>
+      <script src="shell/i18n.js"></script>
+      <script type="module" src="engine/main.js"></script>
+      <script type="module" src="shell/main.js"></script>
+      
+   </head>
+   <body>
+      <div id="xr-shell-root"></div>
+      <script defer src="shell/ui/body-markup-loader.js"></script>
+      <script defer src="shell/body-bootstrap.js"></script>
+   </body>
+</html>
