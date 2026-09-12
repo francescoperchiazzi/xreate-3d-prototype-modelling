@@ -5598,6 +5598,116 @@ html[dir="rtl"] .xr-app > .xr-header .xr-header__mode-group {
   opacity: 0.7;
 }
 
+.xr-menu__group.is-inverted-callout {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 14px 14px 15px;
+  border: var(--border-width-2) solid var(--color-text);
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.xr-menu__group.is-inverted-callout .xr-menu__label {
+  color: var(--color-bg);
+  opacity: 1;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+}
+
+.xr-menu__group.is-inverted-callout .xr-menu__meta {
+  color: var(--color-bg);
+  opacity: 0.9;
+  font-weight: var(--fw-medium);
+  font-size: var(--ui-fs-body);
+  line-height: 1.45;
+}
+
+.xr-menu__group.is-inverted-callout .xr-btn {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-bg);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.04em;
+}
+
+.xr-menu__group.is-inverted-callout .xr-btn:hover {
+  outline: var(--border-width-2) solid var(--color-bg);
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .xr-menu__group.is-inverted-callout {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+  .xr-menu__group.is-inverted-callout .xr-menu__label {
+    color: var(--color-text);
+  }
+  .xr-menu__group.is-inverted-callout .xr-menu__meta {
+    color: var(--color-text);
+    opacity: 0.9;
+  }
+  .xr-menu__group.is-inverted-callout .xr-btn {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+  }
+  .xr-menu__group.is-inverted-callout .xr-btn:hover {
+    outline-color: var(--color-text);
+  }
+}
+
+html[data-theme="dark"] .xr-menu__group.is-inverted-callout {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+html[data-theme="dark"] .xr-menu__group.is-inverted-callout .xr-menu__label {
+  color: var(--color-text);
+}
+
+html[data-theme="dark"] .xr-menu__group.is-inverted-callout .xr-menu__meta {
+  color: var(--color-text);
+  opacity: 0.9;
+}
+
+html[data-theme="dark"] .xr-menu__group.is-inverted-callout .xr-btn {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+html[data-theme="dark"] .xr-menu__group.is-inverted-callout .xr-btn:hover {
+  outline-color: var(--color-text);
+}
+
+html[data-theme="light"] .xr-menu__group.is-inverted-callout {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+html[data-theme="light"] .xr-menu__group.is-inverted-callout .xr-menu__label {
+  color: var(--color-bg);
+}
+
+html[data-theme="light"] .xr-menu__group.is-inverted-callout .xr-menu__meta {
+  color: var(--color-bg);
+  opacity: 0.9;
+}
+
+html[data-theme="light"] .xr-menu__group.is-inverted-callout .xr-btn {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-bg);
+}
+
+html[data-theme="light"] .xr-menu__group.is-inverted-callout .xr-btn:hover {
+  outline-color: var(--color-bg);
+}
+
 .xr-menu-divider {
   height: 1px;
   width: 100%;
@@ -5975,6 +6085,17 @@ html[dir="rtl"] .xr-app > .xr-header .xr-header__mode-group {
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.xr-about-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.xr-about-github-link .xr-about-github-icon {
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 .xr-image-overlay {
