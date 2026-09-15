@@ -256,8 +256,9 @@ separately from the device-scale exercises.
 | --- | --- |
 | [Create with Doodle Polygon and Mirror](scenes/xreate_example_create-with-doodle-polygon-and-mirror.xreate.json) | Bilateral Mirror contour, Polygon Doodle temples, duplication, hinges, and small raised details. |
 | [Create with Pencil and Paper Doodle Polygon](scenes/xreate_example_create-with-pencil-and-paper-doodle-polygon.xreate.json) | A developer’s pencil-and-paper reference drawing traced as a 96-point Polygon Doodle, with the source image retained as a layer. |
-| [Create with Doodle Revolve](scenes/xreate_example_create-with-doodle-revolve.xreate.xreate.json) | A rotational Doodle profile and cylindrical UV workflow. |
+| [Create with Doodle Revolve](scenes/xreate_example_create-with-doodle-revolve.xreate.json) | A rotational Doodle profile and cylindrical UV workflow. |
 | [Create with Volume and a Texture](scenes/xreate_example_create-with-volume-and-a-texture.xreate.json) | A primitive volume with an applied image texture. |
+| [Interoperability Showcase](scenes/xreate_example_interoperability-showcase.xreate.json) | All four authoring demos composed into a single device-scale scene, for cross-tool export proof (GLB / USDZ round-trip fidelity). |
 | [UV Checker — All Shapes](scenes/xreate_uv_checker_all_shapes.xreate.json) | Projection and checker review across the available shape families. |
 
 ## Cinematic large-scale scenes
@@ -288,8 +289,9 @@ viewer check without first opening the editor.
 | --- | --- | --- |
 | Create with Doodle Polygon and Mirror | [GLB](scenes/xreate_example_create-with-doodle-polygon-and-mirror.glb) | [USDZ](scenes/xreate_example_create-with-doodle-polygon-and-mirror.usdz) |
 | Create with Pencil and Paper Doodle Polygon | [GLB](scenes/xreate_example_create-with-pencil-and-paper-doodle-polygon.glb) | [USDZ](scenes/xreate_example_create-with-pencil-and-paper-doodle-polygon.usdz) |
-| Create with Doodle Revolve | [GLB](scenes/xreate_example_create-with-doodle-revolve_xreate.glb) | [USDZ](scenes/xreate_example_create-with-doodle-revolve_xreate.usdz) |
+| Create with Doodle Revolve | [GLB](scenes/xreate_example_create-with-doodle-revolve.glb) | [USDZ](scenes/xreate_example_create-with-doodle-revolve.usdz) |
 | Create with Volume and a Texture | [GLB](scenes/xreate_example_create-with-volume-and-a-texture.glb) | [USDZ](scenes/xreate_example_create-with-volume-and-a-texture.usdz) |
+| Interoperability Showcase | [GLB](scenes/xreate_example_interoperability-showcase.glb) | [USDZ](scenes/xreate_example_interoperability-showcase.usdz) |
 | UV Checker — All Shapes | [GLB](scenes/xreate_uv_checker_all_shapes.glb) | [USDZ](scenes/xreate_uv_checker_all_shapes.usdz) |
 
 Open a **GLB** in a glTF-compatible viewer or a **USDZ** with Apple Quick Look

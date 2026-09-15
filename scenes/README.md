@@ -6,13 +6,16 @@ exercises and reference scenes. They are kept at device scale for AR/XR review.
 - [Create with Doodle Polygon and Mirror](xreate_example_create-with-doodle-polygon-and-mirror.xreate.json)
   demonstrates a Mirror Doodle front contour, Polygon Doodle temples, minimal
   hinges, duplication, and raised lettering.
-- [Create with Doodle Revolve](xreate_example_create-with-doodle-revolve.xreate.xreate.json)
+- [Create with Doodle Revolve](xreate_example_create-with-doodle-revolve.xreate.json)
   demonstrates a rotational Doodle profile and cylindrical UV workflow.
 - [Create with Pencil and Paper Doodle Polygon](xreate_example_create-with-pencil-and-paper-doodle-polygon.xreate.json)
   is a developer sketch traced into a 96-point Polygon Doodle. Its supplied
   drawing remains an editable image layer, while the outline remains geometry.
 - [Create with Volume and a Texture](xreate_example_create-with-volume-and-a-texture.xreate.json)
   demonstrates an image layer on a primitive volume.
+- [Interoperability Showcase](xreate_example_interoperability-showcase.xreate.json)
+  composes the four authoring demos into a single device-scale scene for
+  cross-tool export testing (GLB / USDZ).
 - [UV Checker — All Shapes](xreate_uv_checker_all_shapes.xreate.json)
   compares UV projections and checker layouts across the available shape
   families.

@@ -63,7 +63,7 @@ reviewers.
 | `assets/ATTRIBUTION.md` | Credits, provenance, and license notes for every non-trivial image shipped under `assets/`. |
 | `assets/federico-torre.jpg`, `assets/ico_xreate.{png,svg}` | Project portrait and application icon assets used by the About panel, share cards, favicon, and docs illustrations. |
 | `assets/testing/` | Documentation-only imagery for tutorials and UV/compositor references. Some files are AI-generated (marked in attribution and source filenames such as `Codex-Image-*` and `Gemini_Generated_Image_*`); the NASA blue-marble and skybox assets are reused with their original licenses. These are NOT live editor textures: they are only consumed by the written tutorials in `README.md`. |
-| `scenes/` | Public `.xreate.json` reference scenes, their co-located GLB and USDZ viewer fixtures, and where applicable the exported scene-local texture-atlas PNG produced during export. |
+| `scenes/` | Public `.xreate.json` reference scenes, their co-located GLB and USDZ viewer fixtures, and where applicable the exported scene-local texture-atlas PNG produced during export. The set includes four device-scale authoring demos (pencil-and-paper polygon, mirror-polygon doodle, revolve doodle, volume+texture), a UV-mapping `uv_checker_all_shapes` validation scene, and the `interoperability-showcase` composite scene that combines the four authoring outputs for cross-tool export review. |
 | `scenes/README.md` | Orientation note for the device-scale scene set with format and axis-size expectations. |
 | `scenes/cinematic-experimental/` | Explicitly large-scale cinematic storytelling studies — Aurora Gate, Nebula Flight Deck 3,000+ volume cockpit, Spatial Study Alcove — plus their generation README. |
 | `vendor/` | Pinned browser dependency distributed with the application. Currently `vendor/three.min.js` is the only vendored file (MIT / Three.js Authors). No other third-party runtime scripts are included. |
@@ -75,9 +75,9 @@ reviewers.
 | `docs/KNOWN-LIMITATIONS.md` | Candid current constraints, compatibility notes, and unsupported-but-understood edges. |
 | `docs/FUTURE-FIXES.md` | Confirmed maintenance work, planned compatibility follow-up, and the boundary between a known issue and a future enhancement. |
 | `docs/LOCALIZATION.md` | UI language coverage, the AI-assisted translation disclaimer, and how strings are expanded and reviewed. |
-| `docs/screenshots/` | README product-tour screenshots, numbered 01–20. The JPEG files (01–18) cover the in-app workflow; the PNG files (19–20) document cross-tool interoperability with Apple Reality Composer Pro and Godot 4. |
-| `docs/media/` | Silent English-language 16:9 MP4 walkthroughs recorded from the app viewport, including three 30-second pointer-led interaction demos and a one-minute overview. |
-| `docs/media/interactive-demo-frames/` | Still-frame PNG sequences extracted from the interactive-demo clips for accessibility captions, documentation illustrations, and offline review of frame-accurate steps. `clip1-*`, `clip2-*`, and `clip3-*` match the three pointer-led demos listed in `README.md`. |
+| `docs/screenshots/` | README product-tour screenshots, numbered 01–21. The JPEG files (01–18) cover the in-app workflow; the PNG files (19–21) document cross-tool interoperability (19 — Apple Reality Composer Pro, 20 — Godot 4) and the new multi-source `interoperability-showcase` reference scene viewed inside the XReate editor (21). |
+| `docs/media/` | Silent English-language 16:9 MP4 walkthroughs recorded from the app viewport: `xreate-live-01-compose-volumes.mp4`, `xreate-live-02-doodle-polygon.mp4`, `xreate-live-03-texture-uv.mp4` (each ≈ 30 s pointer-led demo). |
+| `docs/media/interactive-demo-frames/` | Still-frame PNG sequences extracted from the `xreate-live-*` walkthrough clips for accessibility captions, documentation illustrations, and offline review of frame-accurate steps. Frame-series prefixes match the three pointer-led demos listed in `README.md`. |
 
 ## Verification and exploratory tools
 
@@ -119,5 +119,5 @@ server for development, and the address is printed by that command.
 8. All vendored runtime code lives under `vendor/` and is listed explicitly
    in this inventory together with its license lineage in `NOTICE.md`.
 9. `docs/screenshots/` filenames are strictly numbered so that new
-   screenshots append to the sequence (21, 22, …) without breaking the
+   screenshots append to the sequence (22, 23, …) without breaking the
    stable links referenced in `README.md`, `SHARE.md`, and issue reports.
